@@ -1,0 +1,102 @@
+name: finance-inzicht
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: finance
+      POSTGRES_USER: finance
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-local-dev-password}"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finance -d finance"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [backend]
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address :9001
+    environment:
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER:-minioadmin}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:-minioadmin123}"
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9001:9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [backend]
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER:-minioadmin}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:-minioadmin123}"
+    volumes:
+      - ./deploy/minio/init.sh:/init.sh:ro
+    entrypoint: ["/bin/sh", "/init.sh"]
+    networks: [backend]
+  api:
+    build:
+      context: .
+      dockerfile: src/Api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Postgres: "Host=postgres;Database=finance;Username=finance;Password=${POSTGRES_PASSWORD:-local-dev-password}"
+      ObjectStorage__Endpoint: minio:9000
+      ObjectStorage__AccessKey: "${MINIO_ROOT_USER:-minioadmin}"
+      ObjectStorage__SecretKey: "${MINIO_ROOT_PASSWORD:-minioadmin123}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/health/live || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 20
+    networks: [backend]
+  worker:
+    build:
+      context: .
+      dockerfile: src/Worker/Dockerfile
+    environment:
+      ConnectionStrings__Postgres: "Host=postgres;Database=finance;Username=finance;Password=${POSTGRES_PASSWORD:-local-dev-password}"
+      ObjectStorage__Endpoint: minio:9000
+      ObjectStorage__AccessKey: "${MINIO_ROOT_USER:-minioadmin}"
+      ObjectStorage__SecretKey: "${MINIO_ROOT_PASSWORD:-minioadmin123}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    networks: [backend]
+  web:
+    build:
+      context: .
+      dockerfile: src/Web/Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "4200:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 20
+    networks: [backend]
+networks:
+  backend: {}
+volumes:
+  postgres-data: {}
+  minio-data: {}

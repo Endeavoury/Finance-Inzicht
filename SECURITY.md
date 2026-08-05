@@ -1,0 +1,2 @@
+# Security
+Milestone one has no authentication or authorization and must not be exposed to an untrusted network. Uploaded CAMT data is sensitive. The object bucket is private, XML DTD/entity expansion is disabled, and upload/archive limits are enforced. Use secret-managed credentials, TLS, network policies, backups, retention rules, malware scanning, authentication, authorization, and audit logging before production exposure. Report vulnerabilities privately to the maintainers; do not include bank data in reports.
