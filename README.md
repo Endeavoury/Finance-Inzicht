@@ -65,6 +65,16 @@ npm run build
 
 Upload without the UI: `curl -F "file=@samples/camt/simple.xml" http://localhost:8080/api/v1/imports`. Configuration uses `ConnectionStrings__Postgres` and `ObjectStorage__Endpoint`, `__AccessKey`, `__SecretKey`, `__Bucket`, and `__Secure` environment variables.
 
+## Container CI/CD
+
+GitHub Actions validates the .NET solution and Angular application for pull requests to `master`. On pushes to `master` and version tags beginning with `v`, it publishes the following GitHub Container Registry images:
+
+- `ghcr.io/endeavoury/finance-inzicht-api`
+- `ghcr.io/endeavoury/finance-inzicht-worker`
+- `ghcr.io/endeavoury/finance-inzicht-web`
+
+Each published image has an immutable `sha-…` tag; `master` publishes `latest` too, and release tags add semantic version tags. The workflow uses the repository `GITHUB_TOKEN`, so no manually stored registry password is needed. In repository settings, ensure **Actions → General → Workflow permissions** permits read/write access, and configure package visibility/access in GitHub Packages as appropriate for the deployment environment.
+
 ## Security, privacy, limitations, roadmap
 
 Do not expose milestone one publicly: it intentionally lacks identity and authorization. Use TLS, a secrets manager, private networks, malware scanning, retention policies, backups, per-tenant authorization, and audit logging before production. Logs carry job/correlation identifiers but not transaction bodies or full IBANs. See `SECURITY.md`.
