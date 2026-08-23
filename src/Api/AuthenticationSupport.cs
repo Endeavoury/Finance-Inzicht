@@ -25,7 +25,7 @@ public static class AuthenticationSupport
     {
         var key = configuration["Auth:JwtSigningKey"] ?? throw new InvalidOperationException("Auth:JwtSigningKey must be configured.");
         if (key.Length < 32) throw new InvalidOperationException("Auth:JwtSigningKey must be at least 32 characters.");
-        var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), SecurityAlgorithms.HmacSha512);
+        var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), SecurityAlgorithms.HmacSha256);
         var claims = new[] { new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), new Claim(ClaimTypes.Email, user.Email), new Claim(ClaimTypes.Name, user.DisplayName), new Claim(ClaimTypes.Role, user.Role.ToString()) };
         return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(configuration["Auth:Issuer"] ?? "finance-inzicht", configuration["Auth:Audience"] ?? "finance-inzicht-web", claims, expires: DateTime.UtcNow.AddHours(12), signingCredentials: credentials));
     }

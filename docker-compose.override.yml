@@ -4,7 +4,46 @@ services:
   api:
     healthcheck:
       test: ["CMD-SHELL", "test -r /proc/1/status"]
+    develop:
+      watch:
+        - action: rebuild
+          path: ./src/Api
+        - action: rebuild
+          path: ./src/Application
+        - action: rebuild
+          path: ./src/Camt
+        - action: rebuild
+          path: ./src/Domain
+        - action: rebuild
+          path: ./src/Infrastructure
+        - action: rebuild
+          path: ./Directory.Build.props
+        - action: rebuild
+          path: ./Directory.Packages.props
   worker:
     depends_on:
       api:
         condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: ./src/Worker
+        - action: rebuild
+          path: ./src/Application
+        - action: rebuild
+          path: ./src/Camt
+        - action: rebuild
+          path: ./src/Domain
+        - action: rebuild
+          path: ./src/Infrastructure
+        - action: rebuild
+          path: ./Directory.Build.props
+        - action: rebuild
+          path: ./Directory.Packages.props
+  web:
+    develop:
+      watch:
+        - action: rebuild
+          path: ./src/Web
+        - action: rebuild
+          path: ./deploy/nginx/default.conf

@@ -45,7 +45,9 @@ api.MapGet("/analytics/month", async (string? month, int? year, AppDbContext db,
     {
         var transfer = transferIds.Contains(x.Id);
         labels.TryGetValue(x.Id, out var label);
-        var direction = x.CreditDebitIndicator == CreditDebitIndicator.Credit ? "Incoming" : "Outgoing";
+        var direction = transfer
+            ? x.CreditDebitIndicator == CreditDebitIndicator.Credit ? "Transfer in" : "Transfer out"
+            : x.CreditDebitIndicator == CreditDebitIndicator.Credit ? "Incoming" : "Outgoing";
         var category = transfer ? "Transfers" : label?.Category ?? "Miscellaneous";
         var subcategory = transfer ? "Between own accounts" : label?.Subcategory ?? "Other";
         return new { transaction = x, direction, category, subcategory, accountName = accountNames.GetValueOrDefault(x.BankAccountId, "Bank account") };
