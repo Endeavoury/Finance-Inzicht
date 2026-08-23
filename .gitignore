@@ -1,6 +1,44 @@
-**/bin/
-**/obj/
+# Local secrets and environment overrides. Keep the documented template.
+.env
+.env.*
+!.env.example
+
+# .NET / Visual Studio build and user-specific files
+**/[Bb]in/
+**/[Oo]bj/
+**/TestResults/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+.vs/
+*.nupkg
+*.snupkg
+
+# Angular / Node generated output and diagnostics
 **/node_modules/
 **/dist/
-.env
+**/.angular/
+**/coverage/
+**/out-tsc/
+**/.cache/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 playwright-report/
+test-results/
+
+# Locally imported banking data and container data must never be committed.
+imports/
+uploads/
+data/
+postgres-data/
+minio-data/
+*.camt.xml
+*.camt.zip
+
+# OS-generated files
+.DS_Store
+Thumbs.db

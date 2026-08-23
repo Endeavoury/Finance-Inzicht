@@ -48,6 +48,7 @@ services:
       dockerfile: src/Api/Dockerfile
     environment:
       ASPNETCORE_URLS: http://+:8080
+      Auth__JwtSigningKey: "${AUTH_JWT_SIGNING_KEY:?Set AUTH_JWT_SIGNING_KEY to a private 32+ character value}"
       ConnectionStrings__Postgres: "Host=postgres;Database=finance;Username=finance;Password=${POSTGRES_PASSWORD:-local-dev-password}"
       ObjectStorage__Endpoint: minio:9000
       ObjectStorage__AccessKey: "${MINIO_ROOT_USER:-minioadmin}"
