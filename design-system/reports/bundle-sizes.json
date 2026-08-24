@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T10:55:40.127Z",
+  "generatedAt": "2026-08-24T13:22:42.575Z",
   "budgets": {
     "button": {
       "rawBytes": 45000,
@@ -16,16 +16,16 @@
   },
   "bundles": {
     "button": {
-      "rawBytes": 32671,
-      "gzipBytes": 10337
+      "rawBytes": 34883,
+      "gzipBytes": 10679
     },
     "forms": {
-      "rawBytes": 39945,
-      "gzipBytes": 11121
+      "rawBytes": 40347,
+      "gzipBytes": 11229
     },
     "full": {
-      "rawBytes": 91606,
-      "gzipBytes": 18970
+      "rawBytes": 98770,
+      "gzipBytes": 20276
     }
   },
   "sharedControlFoundationOccurrences": 1,

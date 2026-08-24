@@ -151,7 +151,7 @@ export class DsContainer extends DsElement {
     css`
       :host {
         display: block;
-        width: min(100% - 2rem, var(--container, 90rem));
+        width: min(100% - 2.5rem, var(--container, 92rem));
         margin-inline: auto;
       }
       :host([size='narrow']) {
@@ -181,23 +181,24 @@ export class DsPageHeader extends DsElement {
       }
       .header {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: space-between;
         gap: var(--ds-space-6);
-        padding-bottom: var(--ds-space-4);
-        border-bottom: 1px solid var(--ds-color-border-subtle);
+        padding: var(--ds-space-2) 0 var(--ds-space-5);
       }
       .copy {
         min-width: 0;
       }
       h1 {
-        margin: var(--ds-space-1) 0 0;
-        font-size: clamp(var(--ds-font-size-xl), 2vw, var(--ds-font-size-2xl));
+        margin: 0.375rem 0 0;
+        font-size: clamp(var(--ds-font-size-2xl), 2.3vw, var(--ds-font-size-3xl));
+        font-weight: var(--ds-font-weight-semibold);
+        letter-spacing: var(--ds-letter-spacing-tight);
         line-height: var(--ds-line-height-tight);
       }
       p {
         max-width: 48rem;
-        margin: var(--ds-space-2) 0 0;
+        margin: 0.4375rem 0 0;
         color: var(--ds-color-text-muted);
         font-size: var(--ds-font-size-md);
       }

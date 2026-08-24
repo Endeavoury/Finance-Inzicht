@@ -7,6 +7,7 @@
   line-height: var(--ds-line-height-normal);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  font-synthesis: none;
 }
 
 :where(body) {
@@ -21,8 +22,12 @@
   display: none !important;
 }
 :where(:focus-visible) {
-  outline: 2px solid var(--ds-color-focus);
-  outline-offset: 2px;
+  outline: 2px solid color-mix(in srgb, var(--ds-color-focus) 82%, white);
+  outline-offset: 3px;
+}
+:where(::selection) {
+  background: color-mix(in srgb, var(--ds-color-accent-primary) 28%, transparent);
+  color: var(--ds-color-text-primary);
 }
 
 .ds-visually-hidden {
@@ -39,7 +44,7 @@
 
 .ds-page-flow {
   display: grid;
-  gap: var(--ds-space-6);
+  gap: var(--ds-space-7);
 }
 .ds-content-width {
   width: min(100% - 2rem, 90rem);

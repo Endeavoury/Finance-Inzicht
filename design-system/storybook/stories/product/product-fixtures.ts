@@ -7,20 +7,20 @@ export const productStyles = html`<style>
     min-height: 900px;
   }
   .topbar {
-    height: 72px;
-    padding: 0 24px;
+    height: 76px;
+    padding: 0 28px;
   }
   .content {
     display: grid;
-    gap: 14px;
-    margin-top: 14px;
+    gap: var(--ds-space-6);
+    margin-top: var(--ds-space-6);
   }
   .chart {
     display: flex;
     align-items: end;
-    gap: 10px;
+    gap: 12px;
     height: 220px;
-    padding: 18px 8px 0;
+    padding: 22px 10px 0;
     border-bottom: 1px solid var(--ds-color-border-default);
     background: repeating-linear-gradient(
       to bottom,
@@ -41,28 +41,44 @@ export const productStyles = html`<style>
     display: block;
     width: 10px;
     min-height: 3px;
-    border-radius: 2px 2px 0 0;
-    background: var(--ds-color-success);
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ds-color-success) 84%, white),
+      var(--ds-color-success)
+    );
+    box-shadow: 0 -6px 18px color-mix(in srgb, var(--ds-color-success) 16%, transparent);
   }
   .bar.out {
-    background: var(--ds-color-danger);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ds-color-danger) 84%, white),
+      var(--ds-color-danger)
+    );
+    box-shadow: 0 -6px 18px color-mix(in srgb, var(--ds-color-danger) 14%, transparent);
   }
   .split {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 14px;
+    gap: var(--ds-space-6);
   }
   .category-list {
     display: grid;
-    gap: 1px;
-    background: var(--ds-color-border-subtle);
+    gap: 0;
   }
   .category {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 12px;
-    padding: 10px;
-    background: var(--ds-color-bg-surface);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--ds-color-border-subtle);
+  }
+  .category:first-child {
+    padding-top: 2px;
+  }
+  .category:last-child {
+    padding-bottom: 2px;
+    border-bottom: 0;
   }
   .category small {
     display: block;
@@ -72,6 +88,7 @@ export const productStyles = html`<style>
     display: block;
     height: 3px;
     margin-top: 6px;
+    border-radius: var(--ds-radius-round);
     background: var(--ds-color-accent-primary);
   }
   .calendar {
@@ -83,42 +100,48 @@ export const productStyles = html`<style>
     display: grid;
     place-items: center;
     min-height: 50px;
-    border-radius: 4px;
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-sm);
     background: var(--ds-color-bg-hover);
     color: var(--ds-color-text-secondary);
     font-size: 11px;
   }
   .day.hot {
-    background: var(--ds-color-accent-primary);
+    border-color: color-mix(in srgb, var(--ds-color-accent-primary) 46%, transparent);
+    background: color-mix(in srgb, var(--ds-color-accent-primary) 20%, var(--ds-color-bg-surface));
     color: #fff;
   }
   .settings {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: var(--ds-space-6);
   }
   .drop {
     display: grid;
     place-items: center;
     min-height: 190px;
     border: 1px dashed var(--ds-color-border-strong);
-    border-radius: 8px;
-    background: var(--ds-color-bg-surface-subtle);
+    border-radius: var(--ds-radius-lg);
+    background: var(--ds-gradient-surface);
     text-align: center;
   }
   .brand {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-weight: 700;
+    gap: 10px;
+    color: var(--ds-color-text-primary);
+    font-weight: var(--ds-font-weight-semibold);
+    letter-spacing: var(--ds-letter-spacing-tight);
   }
   .brandmark {
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 7px;
-    background: var(--ds-color-accent-primary);
+    width: 34px;
+    height: 34px;
+    border: 1px solid color-mix(in srgb, var(--ds-color-accent-primary) 48%, white);
+    border-radius: var(--ds-radius-md);
+    background: var(--ds-gradient-accent);
+    box-shadow: var(--ds-shadow-accent);
     color: #fff;
   }
   @media (max-width: 760px) {

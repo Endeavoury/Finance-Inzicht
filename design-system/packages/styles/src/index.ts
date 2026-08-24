@@ -6,6 +6,7 @@ export const hostStyles = css`
     color: var(--ds-color-text-primary);
     font-family: var(--ds-font-sans);
     line-height: var(--ds-line-height-normal);
+    -webkit-font-smoothing: antialiased;
   }
   :host([hidden]) {
     display: none !important;
@@ -29,7 +30,7 @@ export const typographyStyles = css`
     color: var(--ds-color-text-muted);
     font-size: var(--ds-font-size-xs);
     font-weight: var(--ds-font-weight-semibold);
-    letter-spacing: 0.12em;
+    letter-spacing: var(--ds-letter-spacing-wide);
     line-height: var(--ds-line-height-tight);
     text-transform: uppercase;
   }
@@ -40,8 +41,8 @@ export const typographyStyles = css`
 
 export const focusStyles = css`
   :where(button, input, select, textarea, a, [tabindex]):focus-visible {
-    outline: 2px solid var(--ds-color-focus);
-    outline-offset: 2px;
+    outline: 2px solid color-mix(in srgb, var(--ds-color-focus) 82%, white);
+    outline-offset: 3px;
   }
 `;
 
@@ -50,8 +51,9 @@ export const controlStyles = css`
     min-height: var(--ds-control-height-md);
     border: 1px solid var(--ds-color-border-default);
     border-radius: var(--ds-radius-md);
-    background: var(--ds-color-bg-surface);
+    background: var(--ds-color-bg-surface-subtle);
     color: var(--ds-color-text-primary);
+    box-shadow: var(--ds-shadow-control);
     transition:
       background var(--ds-duration-fast) var(--ds-ease-standard),
       border-color var(--ds-duration-fast) var(--ds-ease-standard),
@@ -59,10 +61,14 @@ export const controlStyles = css`
   }
   .control:hover:not(:disabled) {
     border-color: var(--ds-color-border-strong);
+    background: var(--ds-color-bg-elevated);
   }
   .control:focus-visible {
     border-color: var(--ds-color-focus);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-color-focus) 18%, transparent);
+    outline: 0;
+    box-shadow:
+      var(--ds-shadow-control),
+      0 0 0 3px color-mix(in srgb, var(--ds-color-focus) 18%, transparent);
   }
   .control:disabled {
     cursor: not-allowed;
@@ -73,13 +79,14 @@ export const controlStyles = css`
 export const formStyles = css`
   .field {
     display: grid;
-    gap: var(--ds-space-2);
+    gap: 0.375rem;
     min-width: 0;
   }
   .label {
     color: var(--ds-color-text-secondary);
     font-size: var(--ds-font-size-sm);
     font-weight: var(--ds-font-weight-semibold);
+    letter-spacing: 0.01em;
   }
   .required {
     color: var(--ds-color-danger);
@@ -100,10 +107,11 @@ export const formStyles = css`
 
 export const surfaceStyles = css`
   .surface {
-    background: var(--ds-color-bg-surface);
+    background: var(--ds-gradient-surface, var(--ds-color-bg-surface));
     border: 1px solid var(--ds-color-border-default);
-    border-radius: var(--ds-radius-md);
-    box-shadow: var(--ds-shadow-sm);
+    border-top-color: var(--ds-color-border-highlight, var(--ds-color-border-default));
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-panel, var(--ds-shadow-sm));
   }
 `;
 

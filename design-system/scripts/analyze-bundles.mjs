@@ -50,8 +50,11 @@ for (const [name, source] of Object.entries(entries)) {
     throw new Error(`${name} bundle exceeds its ${budgets[name].gzipBytes} B gzip budget.`);
   if (name === 'full') {
     const normalizedCode = code.replace(/\s+/g, '');
+    // Anchor the check to the shared `.control` rule. Component-specific motion
+    // may intentionally use the same transition sequence without duplicating
+    // the shared form-control foundation.
     const sharedControlMarker =
-      'transition:backgroundvar(--ds-duration-fast)var(--ds-ease-standard),border-color';
+      '.control{min-height:var(--ds-control-height-md);border:1pxsolidvar(--ds-color-border-default)';
     const markerOccurrences = normalizedCode.split(sharedControlMarker).length - 1;
     report.sharedControlFoundationOccurrences = markerOccurrences;
     if (markerOccurrences !== 1)

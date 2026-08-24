@@ -11,38 +11,61 @@ export class DsAlert extends DsElement {
         display: block;
       }
       .alert {
+        --alert-accent: var(--ds-color-info);
         display: grid;
         grid-template-columns: auto minmax(0, 1fr) auto;
         gap: var(--ds-space-3);
         align-items: start;
-        padding: var(--ds-space-3) var(--ds-space-4);
+        padding: 0.875rem var(--ds-space-4);
         border: 1px solid var(--ds-color-border-default);
-        border-radius: var(--ds-radius-md);
-        background: var(--ds-color-bg-surface);
+        border-radius: var(--ds-radius-lg);
+        background:
+          linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--alert-accent) 8%, transparent),
+            transparent 34%
+          ),
+          var(--ds-gradient-surface, var(--ds-color-bg-surface));
         color: var(--ds-color-text-secondary);
         font-size: var(--ds-font-size-md);
+        box-shadow:
+          inset 3px 0 var(--alert-accent),
+          var(--ds-shadow-sm);
       }
       :host([tone='info']) .alert,
       :host([tone='accent']) .alert {
-        background: var(--ds-color-info-soft);
-        border-color: color-mix(in srgb, var(--ds-color-info) 30%, transparent);
+        --alert-accent: var(--ds-color-info);
+        border-color: color-mix(in srgb, var(--ds-color-info) 24%, var(--ds-color-border-default));
       }
       :host([tone='success']) .alert {
-        background: var(--ds-color-success-soft);
-        border-color: color-mix(in srgb, var(--ds-color-success) 30%, transparent);
+        --alert-accent: var(--ds-color-success);
+        border-color: color-mix(
+          in srgb,
+          var(--ds-color-success) 24%,
+          var(--ds-color-border-default)
+        );
       }
       :host([tone='warning']) .alert {
-        background: var(--ds-color-warning-soft);
-        border-color: color-mix(in srgb, var(--ds-color-warning) 30%, transparent);
+        --alert-accent: var(--ds-color-warning);
+        border-color: color-mix(
+          in srgb,
+          var(--ds-color-warning) 24%,
+          var(--ds-color-border-default)
+        );
       }
       :host([tone='danger']) .alert {
-        background: var(--ds-color-danger-soft);
-        border-color: color-mix(in srgb, var(--ds-color-danger) 30%, transparent);
+        --alert-accent: var(--ds-color-danger);
+        border-color: color-mix(
+          in srgb,
+          var(--ds-color-danger) 24%,
+          var(--ds-color-border-default)
+        );
       }
       .title {
         display: block;
         color: var(--ds-color-text-primary);
         font-weight: var(--ds-font-weight-semibold);
+        letter-spacing: -0.01em;
       }
       .message {
         margin-top: var(--ds-space-1);
@@ -97,8 +120,8 @@ export class DsLoadingState extends DsElement {
         display: grid;
         place-items: center;
         gap: var(--ds-space-3);
-        min-height: 10rem;
-        padding: var(--ds-space-6);
+        min-height: 11rem;
+        padding: var(--ds-space-8);
         text-align: center;
         color: var(--ds-color-text-muted);
       }
@@ -127,23 +150,26 @@ export class DsEmptyState extends DsElement {
         display: grid;
         place-items: center;
         gap: var(--ds-space-2);
-        min-height: 10rem;
-        padding: var(--ds-space-6);
+        min-height: 12rem;
+        padding: var(--ds-space-8);
         border-style: dashed;
         text-align: center;
       }
       .icon {
         display: grid;
         place-items: center;
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: var(--ds-radius-md);
-        background: var(--ds-color-bg-hover);
-        color: var(--ds-color-text-muted);
+        width: 3rem;
+        height: 3rem;
+        border: 1px solid var(--ds-color-border-default);
+        border-radius: var(--ds-radius-lg);
+        background: var(--ds-gradient-elevated, var(--ds-color-bg-hover));
+        color: var(--ds-color-accent-hover);
+        box-shadow: var(--ds-shadow-control);
       }
       h2 {
         margin: var(--ds-space-2) 0 0;
         font-size: var(--ds-font-size-lg);
+        letter-spacing: var(--ds-letter-spacing-tight);
       }
       p {
         max-width: 34rem;

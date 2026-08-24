@@ -139,3 +139,29 @@ describe('data and navigation', () => {
     });
   });
 });
+
+describe('display foundations', () => {
+  it('creates icon geometry in the SVG namespace', async () => {
+    const icon = await mount(document.createElement('ds-icon'));
+    icon.name = 'refresh';
+    await icon.updateComplete;
+    expect(icon.shadowRoot!.querySelector('path')?.namespaceURI).toBe('http://www.w3.org/2000/svg');
+  });
+
+  it('only exposes card regions that have assigned content', async () => {
+    const card = await mount(document.createElement('ds-card'));
+    const headerRegion = card.shadowRoot!.querySelector<HTMLElement>('.header')!;
+    const footerRegion = card.shadowRoot!.querySelector<HTMLElement>('.footer')!;
+    expect(headerRegion.hidden).toBe(true);
+    expect(footerRegion.hidden).toBe(true);
+
+    const heading = document.createElement('strong');
+    heading.slot = 'header';
+    heading.textContent = 'Account summary';
+    card.append(heading);
+    fireEvent(card.shadowRoot!.querySelector("slot[name='header']")!, new Event('slotchange'));
+    await card.updateComplete;
+    expect(headerRegion.hidden).toBe(false);
+    expect(footerRegion.hidden).toBe(true);
+  });
+});

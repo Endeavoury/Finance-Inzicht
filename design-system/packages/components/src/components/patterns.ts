@@ -14,9 +14,9 @@ export class DsFilterBar extends DsElement {
       .bar {
         display: flex;
         align-items: flex-end;
-        gap: var(--ds-space-3);
-        padding: var(--ds-space-4);
-        background: var(--ds-color-bg-surface-subtle);
+        gap: var(--ds-space-4);
+        padding: var(--ds-space-5);
+        background: var(--ds-gradient-surface, var(--ds-color-bg-surface));
       }
       .fields {
         display: grid;
@@ -71,7 +71,7 @@ export class DsKpiGrid extends DsElement {
       :host {
         display: grid;
         grid-template-columns: repeat(var(--columns, 4), minmax(0, 1fr));
-        gap: var(--ds-space-3);
+        gap: var(--ds-space-4);
       }
       @media (max-width: 1100px) {
         :host {

@@ -1,0 +1,746 @@
+/* Finance Inzicht product layer
+   Business visualizations stay application-owned while consuming the same
+   semantic tokens, geometry, and elevation language as the design system. */
+
+:root {
+  --canvas: var(--ds-color-bg-canvas);
+  --canvas-deep: var(--ds-color-bg-sunken);
+  --surface: var(--ds-color-bg-surface);
+  --surface-muted: var(--ds-color-bg-surface-subtle);
+  --surface-raised: var(--ds-color-bg-elevated);
+  --surface-hover: var(--ds-color-bg-hover);
+  --border: var(--ds-color-border-default);
+  --border-strong: var(--ds-color-border-strong);
+  --ink: var(--ds-color-text-primary);
+  --muted: var(--ds-color-text-muted);
+  --line: var(--ds-color-border-subtle);
+  --card: var(--ds-color-bg-surface);
+  --accent: var(--ds-color-accent-primary);
+  --accent-soft: var(--ds-color-accent-soft);
+  --income: var(--ds-color-success);
+  --expense: var(--ds-color-danger);
+  --transfer: #9c8cf0;
+  --green: var(--ds-color-accent-primary);
+  --shadow-xs: var(--ds-shadow-sm);
+  --shadow-sm: var(--ds-shadow-md);
+  --shadow-md: var(--ds-shadow-lg);
+}
+
+html,
+body {
+  background: var(--ds-color-bg-canvas);
+  color: var(--ds-color-text-primary);
+  font-family: var(--ds-font-sans);
+}
+
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(
+      circle at 76% -12%,
+      color-mix(in srgb, var(--ds-color-accent-soft) 38%, transparent),
+      transparent 34rem
+    ),
+    var(--ds-color-bg-canvas);
+  font-variant-numeric: tabular-nums;
+}
+
+* {
+  scrollbar-color: var(--ds-color-border-strong)
+    var(--ds-color-bg-surface-subtle);
+}
+
+/* Product shell composition */
+ds-app-shell.shell {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+ds-app-shell > main {
+  max-width: 1740px;
+  padding: var(--ds-space-8) var(--ds-space-10) var(--ds-space-12);
+}
+
+ds-sidebar .brandmark,
+.brandmark {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid
+    color-mix(in srgb, var(--ds-color-accent-hover) 44%, transparent);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-gradient-accent);
+  color: var(--ds-color-text-inverse);
+  font-size: var(--ds-font-size-lg);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 18%),
+    var(--ds-shadow-accent);
+}
+
+.app-header {
+  min-height: 4.75rem;
+  padding-inline: var(--ds-space-8);
+}
+
+.app-header small,
+.eyebrow {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+}
+
+.app-header h1 {
+  color: var(--ds-color-text-primary);
+  font-size: var(--ds-font-size-xl);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-tight);
+}
+
+/* Page and analytical hierarchy */
+ds-page-header.hero-row,
+ds-page-header.period-hero {
+  margin: 0 0 var(--ds-space-5);
+}
+
+ds-page-header.hero-row::part(heading),
+ds-page-header.period-hero::part(heading) {
+  color: var(--ds-color-text-primary);
+}
+
+ds-button-group.period {
+  padding: 0.1875rem;
+  border-color: var(--ds-color-border-subtle);
+  border-radius: var(--ds-radius-md);
+  background: color-mix(in srgb, var(--ds-color-bg-sunken) 74%, transparent);
+}
+
+.chart-grid {
+  gap: var(--ds-space-5);
+}
+
+.panel,
+.page-card,
+.period-panel,
+.account-settings article,
+.detail-groups section,
+.balance-columns > section,
+.transfer-section {
+  border: 1px solid var(--ds-color-border-default);
+  border-top-color: var(--ds-color-border-highlight);
+  background: var(--ds-gradient-surface);
+  box-shadow: var(--ds-shadow-panel);
+}
+
+.panel,
+.period-panel {
+  padding: var(--ds-space-5);
+  border-radius: var(--ds-radius-lg);
+}
+
+.page-card {
+  padding: var(--ds-space-7);
+  border-radius: var(--ds-radius-xl);
+}
+
+.panel:hover,
+.period-panel:hover,
+.page-card:hover {
+  border-color: var(--ds-color-border-default);
+  box-shadow: var(--ds-shadow-panel);
+  transform: none;
+}
+
+.panel-head {
+  gap: var(--ds-space-5);
+  margin-bottom: var(--ds-space-5);
+}
+
+.panel h3,
+.panel-head h2,
+.period-panel h3,
+.balance-column-head h3 {
+  color: var(--ds-color-text-primary);
+  font-family: var(--ds-font-sans);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-tight);
+}
+
+.muted {
+  color: var(--ds-color-text-muted);
+}
+
+/* Metrics and selected insight */
+ds-kpi-grid.primary,
+ds-kpi-grid.secondary {
+  gap: var(--ds-space-4);
+}
+
+ds-kpi-grid.primary {
+  margin-bottom: var(--ds-space-4);
+}
+
+ds-kpi-grid.primary ds-metric::part(metric) {
+  min-height: 9.5rem;
+}
+
+ds-kpi-grid.secondary ds-metric::part(metric) {
+  min-height: 8rem;
+}
+
+.dashboard-insight {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--ds-space-6);
+  margin: 0 0 var(--ds-space-5);
+  padding: var(--ds-space-5);
+  border: 1px solid
+    color-mix(in srgb, var(--ds-color-info) 24%, var(--ds-color-border-default));
+  border-left: 3px solid var(--ds-color-info);
+  border-radius: var(--ds-radius-lg);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ds-color-info) 8%, transparent),
+      transparent 40%
+    ),
+    var(--ds-gradient-surface);
+  box-shadow: var(--ds-shadow-panel);
+}
+
+.dashboard-insight h3 {
+  color: var(--ds-color-text-primary);
+  font-family: var(--ds-font-sans);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-tight);
+}
+
+.dashboard-insight p {
+  color: var(--ds-color-text-secondary);
+}
+
+.dashboard-insight > strong {
+  color: var(--ds-color-info);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-font-size-2xl);
+  letter-spacing: var(--ds-letter-spacing-tight);
+}
+
+/* Charts retain product meaning with quieter framing. */
+.bar-chart,
+.line-wrap,
+.monthly-flow,
+.daily-chart,
+.year-chart {
+  border-color: var(--ds-color-border-default);
+}
+
+.bars,
+.monthly-flow,
+.daily-chart,
+.year-chart {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 60px,
+    var(--ds-color-border-subtle) 61px
+  );
+}
+
+.income-bar,
+.fi,
+.flow-in {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ds-color-success) 86%, white),
+    var(--ds-color-success)
+  );
+}
+
+.expense-bar,
+.fo,
+.flow-out {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ds-color-danger) 86%, white),
+    var(--ds-color-danger)
+  );
+}
+
+.fti,
+.flow-transfer-in {
+  background: var(--ds-color-info);
+}
+
+.fto,
+.flow-transfer-out {
+  background: var(--transfer);
+}
+
+.bar-pair i,
+.flow-bars i,
+.daily-bar i,
+.year-bars i,
+.category-trend i {
+  border-radius: 3px 3px 1px 1px;
+}
+
+.bars,
+.bar-chart,
+.line-wrap,
+.monthly-flow {
+  border-color: var(--ds-color-border-default);
+}
+
+.y-guide,
+.axis,
+.bar-group small,
+.flow-month small,
+.year-chart small,
+.heat-months {
+  color: var(--ds-color-text-muted);
+}
+
+.donut {
+  box-shadow:
+    inset 0 0 0 1px var(--ds-color-border-highlight),
+    0 18px 36px rgb(0 0 0 / 18%);
+}
+
+.donut > div {
+  background: var(--ds-color-bg-surface);
+}
+
+.rank-list > div,
+.metrics > div,
+.category-list > div,
+.merchant-list > div {
+  border-color: var(--ds-color-border-subtle);
+}
+
+.rank,
+.bank-icon,
+.merchant-avatar,
+.kpi-icon {
+  border: 1px solid
+    color-mix(in srgb, var(--ds-color-info) 16%, var(--ds-color-border-default));
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-info-soft);
+  color: var(--ds-color-info);
+  box-shadow: var(--ds-shadow-control);
+}
+
+.merchant-bar {
+  background: var(--ds-color-bg-sunken);
+}
+
+.merchant-bar i {
+  background: linear-gradient(
+    90deg,
+    var(--ds-color-accent-active),
+    var(--ds-color-accent-hover)
+  );
+}
+
+.account {
+  border-color: var(--ds-color-border-default);
+  border-radius: var(--ds-radius-lg);
+  background: color-mix(in srgb, var(--ds-color-bg-elevated) 48%, transparent);
+  box-shadow: inset 0 1px 0 var(--ds-color-border-highlight);
+}
+
+.dashboard-list-link:hover,
+.dashboard-link:hover {
+  border-color: var(--ds-color-border-strong);
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+/* Monthly and annual planning surfaces */
+.period-page {
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-7);
+  background: var(--ds-gradient-surface);
+}
+
+.period-hero {
+  padding: 0;
+  border-bottom: 0;
+}
+
+.period-navigator {
+  gap: var(--ds-space-2);
+}
+
+.period-navigator label {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+  letter-spacing: 0.02em;
+}
+
+.period-navigator input {
+  min-width: 10rem;
+  height: var(--ds-control-height-lg);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg-surface-subtle);
+  color: var(--ds-color-text-primary);
+  box-shadow: var(--ds-shadow-control);
+}
+
+.budget-strip {
+  gap: var(--ds-space-3);
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+
+.budget-strip article {
+  min-height: 7rem;
+  padding: var(--ds-space-4);
+  border: 1px solid var(--ds-color-border-default) !important;
+  border-top-color: var(--ds-color-border-highlight) !important;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-gradient-surface);
+  box-shadow: var(--ds-shadow-panel);
+}
+
+.budget-strip article::before {
+  inset: 0 var(--ds-space-3) auto;
+  border-radius: 0 0 var(--ds-radius-round) var(--ds-radius-round);
+}
+
+.budget-strip label {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+  letter-spacing: var(--ds-letter-spacing-wide);
+}
+
+.budget-strip strong {
+  color: var(--ds-color-text-primary);
+  font-family: var(--ds-font-sans);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-tight);
+}
+
+.budget-strip small {
+  color: var(--ds-color-text-muted);
+  font-size: var(--ds-font-size-xs);
+}
+
+.period-panel .panel-head {
+  padding-bottom: var(--ds-space-3);
+  border-color: var(--ds-color-border-subtle);
+}
+
+.selection-summary {
+  border: 1px solid
+    color-mix(in srgb, var(--ds-color-info) 22%, var(--ds-color-border-default));
+  border-radius: var(--ds-radius-md);
+  background: color-mix(
+    in srgb,
+    var(--ds-color-info-soft) 54%,
+    var(--ds-color-bg-surface)
+  );
+}
+
+.calendar-day,
+.pace-stats div,
+.month-card-rail button,
+.category-bars > button,
+.category-chips button,
+.balance-group,
+.period-transactions button {
+  border-color: var(--ds-color-border-default);
+  background: var(--ds-color-bg-surface-subtle);
+  color: var(--ds-color-text-secondary);
+}
+
+.calendar-day:hover,
+.calendar-day.selected,
+.month-card-rail button:hover,
+.month-card-rail button.selected,
+.category-bars > button:hover,
+.category-bars > button.selected,
+.category-chips button.active,
+.balance-group summary:hover,
+.period-transactions button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--ds-color-accent-primary) 44%,
+    var(--ds-color-border-default)
+  );
+  background: var(--ds-color-bg-selected);
+  color: var(--ds-color-text-primary);
+}
+
+.period-details,
+.balance-columns > section,
+.transfer-section {
+  border-radius: var(--ds-radius-lg) !important;
+  background: var(--ds-gradient-surface) !important;
+}
+
+/* Forms, imports, ledgers, and data density */
+.ledger-filter-panel,
+.category-editor {
+  padding: var(--ds-space-5);
+  border: 1px solid var(--ds-color-border-default);
+  border-top-color: var(--ds-color-border-highlight);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-gradient-surface);
+  box-shadow: var(--ds-shadow-panel);
+}
+
+.ledger-filter-panel input,
+.ledger-filter-panel select,
+.category-editor select,
+.account-filter,
+.search,
+input,
+select,
+textarea {
+  border-color: var(--ds-color-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg-surface-subtle);
+  color: var(--ds-color-text-primary);
+  box-shadow: var(--ds-shadow-control);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--ds-color-focus) !important;
+  background: var(--ds-color-bg-elevated) !important;
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--ds-color-focus) 18%, transparent) !important;
+}
+
+.drop {
+  min-height: 16rem;
+  border: 1px dashed
+    color-mix(in srgb, var(--ds-color-info) 42%, var(--ds-color-border-default));
+  border-radius: var(--ds-radius-xl);
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      color-mix(in srgb, var(--ds-color-info-soft) 68%, transparent),
+      transparent 58%
+    ),
+    var(--ds-color-bg-surface-subtle);
+  box-shadow: inset 0 1px 0 var(--ds-color-border-highlight);
+}
+
+.drop::before {
+  border-color: color-mix(
+    in srgb,
+    var(--ds-color-info) 18%,
+    var(--ds-color-border-default)
+  );
+  border-radius: var(--ds-radius-lg);
+}
+
+.drop:hover,
+.drop.dragging {
+  border-color: var(--ds-color-info);
+  background: var(--ds-color-info-soft);
+  box-shadow: var(--ds-shadow-md);
+}
+
+.table-wrap,
+.ledger-page .table-wrap,
+.group-details {
+  border-color: var(--ds-color-border-default);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: inset 0 0 0 1px var(--ds-color-border-subtle);
+}
+
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+thead th {
+  background: color-mix(
+    in srgb,
+    var(--ds-color-bg-elevated) 72%,
+    var(--ds-color-bg-surface)
+  );
+  color: var(--ds-color-text-muted);
+  border-color: var(--ds-color-border-default);
+  letter-spacing: 0.085em;
+}
+
+th,
+td {
+  border-color: var(--ds-color-border-subtle);
+}
+
+td {
+  color: var(--ds-color-text-secondary);
+}
+
+tbody tr:hover,
+.transaction-row:hover,
+.transaction-row.selected {
+  background: color-mix(
+    in srgb,
+    var(--ds-color-bg-selected) 68%,
+    transparent
+  ) !important;
+}
+
+.transaction-row:hover {
+  box-shadow: inset 2px 0 var(--ds-color-accent-primary);
+}
+
+.detail-row > td,
+.ledger-editor-row td,
+.transaction-detail {
+  background: var(--ds-color-bg-surface-subtle) !important;
+}
+
+.transaction-detail {
+  border-color: var(--ds-color-accent-primary);
+}
+
+.detail-groups section,
+.account-settings article {
+  border-radius: var(--ds-radius-lg);
+}
+
+.raw-detail {
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-bg-sunken);
+  color: var(--ds-color-text-secondary);
+  box-shadow: inset 0 1px 8px rgb(0 0 0 / 24%);
+}
+
+.result-count {
+  border-color: color-mix(
+    in srgb,
+    var(--ds-color-info) 24%,
+    var(--ds-color-border-default)
+  );
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-info-soft);
+}
+
+.result-count b,
+.category-inline {
+  color: var(--ds-color-info) !important;
+}
+
+.data-note,
+.ledger-explanation {
+  border: 1px solid
+    color-mix(in srgb, var(--ds-color-info) 20%, var(--ds-color-border-default));
+  border-radius: var(--ds-radius-lg);
+  background: color-mix(
+    in srgb,
+    var(--ds-color-info-soft) 52%,
+    var(--ds-color-bg-surface)
+  );
+  color: var(--ds-color-text-secondary);
+}
+
+/* Authentication uses the same elevated surface instead of a separate visual language. */
+.login-page {
+  background:
+    radial-gradient(
+      circle at 50% -12%,
+      color-mix(in srgb, var(--ds-color-accent-primary) 18%, transparent),
+      transparent 36rem
+    ),
+    var(--ds-color-bg-canvas);
+}
+
+ds-card.login-card::part(card) {
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-gradient-elevated);
+  box-shadow: var(--ds-shadow-lg);
+}
+
+ds-card.login-card::part(body) {
+  padding: var(--ds-space-8);
+}
+
+ds-card.login-card h1 {
+  color: var(--ds-color-text-primary);
+  font-size: var(--ds-font-size-3xl);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-tight);
+}
+
+@media (max-width: 1100px) {
+  ds-app-shell > main {
+    padding-inline: var(--ds-space-6);
+  }
+
+  .budget-strip {
+    gap: var(--ds-space-2);
+  }
+}
+
+@media (max-width: 680px) {
+  ds-app-shell > main {
+    padding: var(--ds-space-5) var(--ds-space-3)
+      calc(5.5rem + env(safe-area-inset-bottom));
+  }
+
+  .app-header {
+    min-height: 4.25rem;
+    padding-inline: var(--ds-space-3);
+  }
+
+  ds-page-header.hero-row,
+  ds-page-header.period-hero {
+    margin-bottom: var(--ds-space-4);
+  }
+
+  ds-kpi-grid.primary,
+  ds-kpi-grid.secondary {
+    gap: var(--ds-space-2);
+  }
+
+  ds-kpi-grid.primary ds-metric::part(metric),
+  ds-kpi-grid.secondary ds-metric::part(metric) {
+    min-height: 7.75rem;
+  }
+
+  .panel,
+  .period-panel,
+  .page-card,
+  .period-page {
+    padding: var(--ds-space-4);
+    border-radius: var(--ds-radius-lg);
+  }
+
+  .chart-grid {
+    gap: var(--ds-space-3);
+  }
+
+  .dashboard-insight {
+    grid-template-columns: 1fr;
+    gap: var(--ds-space-3);
+  }
+
+  .budget-strip {
+    gap: var(--ds-space-2);
+    background: transparent;
+  }
+
+  .budget-strip article {
+    min-height: 6.5rem;
+    padding: var(--ds-space-3);
+  }
+
+  ds-card.login-card::part(body) {
+    padding: var(--ds-space-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-link:hover,
+  .dashboard-list-link:hover {
+    transform: none;
+  }
+}

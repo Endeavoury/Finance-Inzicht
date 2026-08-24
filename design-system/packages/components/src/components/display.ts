@@ -1,5 +1,5 @@
 import { css, html, nothing, type CSSResultGroup } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { foundationStyles, surfaceStyles } from '@finance-inzicht/styles';
 import { DsElement, type DsTone } from '../core/ds-element.js';
 
@@ -14,14 +14,15 @@ export class DsBadge extends DsElement {
         display: inline-flex;
         align-items: center;
         gap: var(--ds-space-1);
-        min-height: 1.375rem;
-        padding: 0 var(--ds-space-2);
+        min-height: 1.5rem;
+        padding: 0 0.625rem;
         border: 1px solid var(--ds-color-border-default);
         border-radius: var(--ds-radius-round);
         background: var(--ds-color-bg-hover);
         color: var(--ds-color-text-secondary);
         font-size: var(--ds-font-size-xs);
         font-weight: var(--ds-font-weight-semibold);
+        letter-spacing: 0.01em;
         white-space: nowrap;
       }
       :host([tone='accent']) .badge,
@@ -70,8 +71,8 @@ export class DsStatusBadge extends DsElement {
         white-space: nowrap;
       }
       .dot {
-        width: 0.5rem;
-        height: 0.5rem;
+        width: 0.4375rem;
+        height: 0.4375rem;
         border-radius: 50%;
         background: var(--ds-color-text-muted);
         box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-color-text-muted) 12%, transparent);
@@ -114,17 +115,17 @@ export class DsAvatar extends DsElement {
         place-items: center;
         width: 2rem;
         height: 2rem;
+        border: 1px solid color-mix(in srgb, var(--ds-color-accent-hover) 46%, transparent);
         border-radius: var(--ds-radius-md);
         overflow: hidden;
-        background: linear-gradient(
-          145deg,
-          var(--ds-color-accent-hover),
-          var(--ds-color-accent-active)
-        );
+        background: var(--ds-gradient-accent);
         color: var(--ds-color-text-inverse);
         font-size: var(--ds-font-size-xs);
         font-weight: var(--ds-font-weight-semibold);
         text-transform: uppercase;
+        box-shadow:
+          inset 0 1px 0 rgb(255 255 255 / 16%),
+          0 5px 14px color-mix(in srgb, var(--ds-color-accent-primary) 16%, transparent);
       }
       :host([size='small']) .avatar {
         width: 1.5rem;
@@ -176,19 +177,20 @@ export class DsCard extends DsElement {
       .header,
       .body,
       .footer {
-        padding: var(--ds-space-4);
+        padding: var(--ds-space-5);
       }
       .header {
         display: flex;
         justify-content: space-between;
         gap: var(--ds-space-4);
         border-bottom: 1px solid var(--ds-color-border-subtle);
+        background: color-mix(in srgb, var(--ds-color-bg-elevated) 34%, transparent);
       }
       .footer {
         border-top: 1px solid var(--ds-color-border-subtle);
+        background: color-mix(in srgb, var(--ds-color-bg-surface-subtle) 50%, transparent);
       }
-      .header:empty,
-      .footer:empty {
+      [hidden] {
         display: none;
       }
       :host([padding='none']) .body {
@@ -200,13 +202,28 @@ export class DsCard extends DsElement {
     `,
   ];
   @property({ reflect: true }) padding: 'none' | 'compact' | 'normal' = 'normal';
+  @state() private hasHeader = false;
+  @state() private hasFooter = false;
+  private syncSlots() {
+    const hasAssignedContent = (name: string) =>
+      (
+        this.shadowRoot
+          ?.querySelector<HTMLSlotElement>(`slot[name='${name}']`)
+          ?.assignedNodes({ flatten: true }) ?? []
+      ).some((node) => node.nodeType === Node.ELEMENT_NODE || Boolean(node.textContent?.trim()));
+    this.hasHeader = hasAssignedContent('header') || hasAssignedContent('actions');
+    this.hasFooter = hasAssignedContent('footer');
+  }
   protected override render() {
     return html`<article class="card surface" part="card">
-      <div class="header" part="header">
-        <slot name="header"></slot><slot name="actions"></slot>
+      <div class="header" part="header" ?hidden=${!this.hasHeader}>
+        <slot name="header" @slotchange=${this.syncSlots}></slot
+        ><slot name="actions" @slotchange=${this.syncSlots}></slot>
       </div>
       <div class="body" part="body"><slot></slot></div>
-      <div class="footer" part="footer"><slot name="footer"></slot></div>
+      <div class="footer" part="footer" ?hidden=${!this.hasFooter}>
+        <slot name="footer" @slotchange=${this.syncSlots}></slot>
+      </div>
     </article>`;
   }
 }
@@ -220,20 +237,22 @@ export class DsPanel extends DsElement {
         display: block;
       }
       .panel {
-        padding: var(--ds-space-4);
+        padding: var(--ds-space-5);
       }
       header {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
         gap: var(--ds-space-4);
-        padding-bottom: var(--ds-space-3);
-        margin-bottom: var(--ds-space-3);
+        padding-bottom: var(--ds-space-4);
+        margin-bottom: var(--ds-space-4);
         border-bottom: 1px solid var(--ds-color-border-subtle);
       }
       h2 {
-        margin: var(--ds-space-1) 0 0;
+        margin: 0.375rem 0 0;
         font-size: var(--ds-font-size-xl);
+        font-weight: var(--ds-font-weight-semibold);
+        letter-spacing: var(--ds-letter-spacing-tight);
         line-height: var(--ds-line-height-tight);
       }
       .description {
@@ -282,16 +301,33 @@ export class DsMetric extends DsElement {
       }
       .metric {
         position: relative;
-        min-height: 6.25rem;
-        padding: var(--ds-space-4);
+        min-height: 7rem;
+        padding: var(--ds-space-5);
         overflow: hidden;
       }
       .metric::before {
         content: '';
         position: absolute;
-        inset: 0 0 auto;
+        inset: 0 var(--ds-space-4) auto;
         height: 2px;
+        border-radius: 0 0 var(--ds-radius-round) var(--ds-radius-round);
         background: var(--ds-color-border-strong);
+      }
+      .metric::after {
+        content: '';
+        position: absolute;
+        z-index: 0;
+        top: -4.5rem;
+        right: -4rem;
+        width: 10rem;
+        height: 10rem;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          color-mix(in srgb, var(--metric-accent, var(--ds-color-border-strong)) 12%, transparent),
+          transparent 68%
+        );
+        pointer-events: none;
       }
       :host([tone='accent']) .metric::before,
       :host([tone='info']) .metric::before {
@@ -306,19 +342,39 @@ export class DsMetric extends DsElement {
       :host([tone='danger']) .metric::before {
         background: var(--ds-color-danger);
       }
+      :host([tone='accent']) .metric,
+      :host([tone='info']) .metric {
+        --metric-accent: var(--ds-color-info);
+      }
+      :host([tone='success']) .metric {
+        --metric-accent: var(--ds-color-success);
+      }
+      :host([tone='warning']) .metric {
+        --metric-accent: var(--ds-color-warning);
+      }
+      :host([tone='danger']) .metric {
+        --metric-accent: var(--ds-color-danger);
+      }
+      .label,
+      .value,
+      .detail {
+        position: relative;
+        z-index: 1;
+      }
       .label {
         display: block;
         color: var(--ds-color-text-muted);
         font-size: var(--ds-font-size-xs);
         font-weight: var(--ds-font-weight-semibold);
-        letter-spacing: 0.08em;
+        letter-spacing: var(--ds-letter-spacing-wide);
         text-transform: uppercase;
       }
       .value {
         display: block;
-        margin: var(--ds-space-3) 0 var(--ds-space-1);
+        margin: 0.625rem 0 var(--ds-space-1);
         font-size: var(--ds-font-size-2xl);
         font-weight: var(--ds-font-weight-semibold);
+        letter-spacing: var(--ds-letter-spacing-tight);
         line-height: var(--ds-line-height-tight);
         overflow-wrap: anywhere;
       }

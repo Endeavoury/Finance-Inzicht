@@ -40,11 +40,17 @@ export class DsButton extends DsElement {
         cursor: pointer;
         font-size: var(--ds-font-size-md);
         font-weight: var(--ds-font-weight-semibold);
+        letter-spacing: -0.005em;
         white-space: nowrap;
         transition:
-          background var(--ds-duration-fast),
-          border-color var(--ds-duration-fast),
-          transform var(--ds-duration-fast);
+          background var(--ds-duration-fast) var(--ds-ease-standard),
+          border-color var(--ds-duration-fast) var(--ds-ease-standard),
+          box-shadow var(--ds-duration-fast) var(--ds-ease-standard),
+          color var(--ds-duration-fast) var(--ds-ease-standard),
+          transform var(--ds-duration-fast) var(--ds-ease-standard);
+      }
+      button:hover:not(:disabled) {
+        transform: translateY(-1px);
       }
       button:active:not(:disabled) {
         transform: translateY(1px);
@@ -60,16 +66,32 @@ export class DsButton extends DsElement {
         font-size: var(--ds-font-size-lg);
       }
       :host([variant='primary']) button {
-        background: var(--ds-color-accent-primary);
+        border-color: color-mix(in srgb, var(--ds-color-accent-hover) 68%, transparent);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--ds-color-accent-hover) 72%, var(--ds-color-accent-primary)),
+          var(--ds-color-accent-primary)
+        );
         color: var(--ds-color-text-inverse);
+        box-shadow:
+          inset 0 1px 0 rgb(255 255 255 / 18%),
+          var(--ds-shadow-accent);
       }
       :host([variant='primary']) button:hover:not(:disabled) {
-        background: var(--ds-color-accent-hover);
+        background: linear-gradient(
+          180deg,
+          var(--ds-color-accent-hover),
+          color-mix(in srgb, var(--ds-color-accent-primary) 88%, black)
+        );
+        box-shadow:
+          inset 0 1px 0 rgb(255 255 255 / 22%),
+          0 10px 26px color-mix(in srgb, var(--ds-color-accent-primary) 26%, transparent);
       }
       :host([variant='secondary']) button {
-        background: var(--ds-color-bg-surface);
+        background: var(--ds-gradient-surface, var(--ds-color-bg-surface));
         border-color: var(--ds-color-border-default);
         color: var(--ds-color-text-primary);
+        box-shadow: var(--ds-shadow-control);
       }
       :host([variant='secondary']) button:hover:not(:disabled) {
         background: var(--ds-color-bg-hover);
@@ -84,8 +106,14 @@ export class DsButton extends DsElement {
         color: var(--ds-color-text-primary);
       }
       :host([variant='danger']) button {
-        background: var(--ds-color-danger);
+        border-color: color-mix(in srgb, var(--ds-color-danger) 70%, black);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--ds-color-danger) 88%, white),
+          var(--ds-color-danger)
+        );
         color: var(--ds-color-text-inverse);
+        box-shadow: 0 8px 20px color-mix(in srgb, var(--ds-color-danger) 20%, transparent);
       }
       button:disabled {
         cursor: not-allowed;
@@ -151,14 +179,24 @@ export class DsIconButton extends DsElement {
         padding: 0;
         border: 1px solid var(--ds-color-border-default);
         border-radius: var(--ds-radius-md);
-        background: var(--ds-color-bg-surface);
+        background: var(--ds-gradient-surface, var(--ds-color-bg-surface));
         color: var(--ds-color-text-secondary);
         cursor: pointer;
+        box-shadow: var(--ds-shadow-control);
+        transition:
+          background var(--ds-duration-fast) var(--ds-ease-standard),
+          border-color var(--ds-duration-fast) var(--ds-ease-standard),
+          color var(--ds-duration-fast) var(--ds-ease-standard),
+          transform var(--ds-duration-fast) var(--ds-ease-standard);
       }
       button:hover:not(:disabled) {
         background: var(--ds-color-bg-hover);
         color: var(--ds-color-text-primary);
         border-color: var(--ds-color-border-strong);
+        transform: translateY(-1px);
+      }
+      button:active:not(:disabled) {
+        transform: translateY(1px);
       }
       button:disabled {
         opacity: 0.5;

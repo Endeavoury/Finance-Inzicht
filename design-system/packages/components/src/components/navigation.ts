@@ -17,10 +17,10 @@ export class DsSidebarItem extends DsElement {
         position: relative;
         display: flex;
         align-items: center;
-        gap: var(--ds-space-3);
+        gap: 0.6875rem;
         width: 100%;
-        min-height: 2.5rem;
-        padding: 0 var(--ds-space-3);
+        min-height: 2.625rem;
+        padding: 0 0.8125rem;
         border: 1px solid transparent;
         border-radius: var(--ds-radius-md);
         background: transparent;
@@ -30,6 +30,11 @@ export class DsSidebarItem extends DsElement {
         text-decoration: none;
         cursor: pointer;
         text-align: left;
+        transition:
+          background var(--ds-duration-fast) var(--ds-ease-standard),
+          border-color var(--ds-duration-fast) var(--ds-ease-standard),
+          color var(--ds-duration-fast) var(--ds-ease-standard),
+          transform var(--ds-duration-fast) var(--ds-ease-standard);
       }
       .item::before {
         content: '';
@@ -44,20 +49,34 @@ export class DsSidebarItem extends DsElement {
       .item:hover {
         background: var(--ds-color-bg-hover);
         color: var(--ds-color-text-primary);
+        transform: translateX(2px);
       }
       :host([active]) .item {
-        background: var(--ds-color-bg-selected);
-        border-color: var(--ds-color-border-default);
+        background: linear-gradient(
+          90deg,
+          var(--ds-color-bg-selected),
+          color-mix(in srgb, var(--ds-color-bg-selected) 58%, transparent)
+        );
+        border-color: color-mix(
+          in srgb,
+          var(--ds-color-accent-primary) 18%,
+          var(--ds-color-border-default)
+        );
         color: var(--ds-color-text-primary);
+        box-shadow: inset 0 1px 0 var(--ds-color-border-highlight);
       }
       :host([active]) .item::before {
         background: var(--ds-color-accent-primary);
       }
       .icon {
         display: inline-flex;
-        width: var(--ds-icon-md);
-        height: var(--ds-icon-md);
+        width: 1.125rem;
+        height: 1.125rem;
         flex: 0 0 auto;
+        color: var(--ds-color-text-muted);
+      }
+      :host([active]) .icon {
+        color: var(--ds-color-accent-hover);
       }
       .label {
         overflow: hidden;
@@ -125,18 +144,24 @@ export class DsSidebar extends DsElement {
       :host {
         display: flex;
         flex-direction: column;
-        width: 14.5rem;
+        width: 15.25rem;
         height: 100%;
-        padding: var(--ds-space-4);
+        padding: 1.125rem;
         border-right: 1px solid var(--ds-color-border-subtle);
-        background: var(--ds-color-bg-surface-subtle);
+        background: linear-gradient(
+          180deg,
+          var(--ds-color-bg-surface-subtle),
+          color-mix(in srgb, var(--ds-color-bg-sunken) 78%, var(--ds-color-bg-surface-subtle))
+        );
+        box-shadow: inset -1px 0 0
+          color-mix(in srgb, var(--ds-color-border-highlight) 52%, transparent);
       }
       .brand {
-        padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-6);
+        padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-8);
       }
       nav {
         display: grid;
-        gap: var(--ds-space-1);
+        gap: 0.1875rem;
       }
       .footer {
         margin-top: auto;
@@ -190,7 +215,13 @@ export class DsAppShell extends DsElement {
         display: grid;
         grid-template-columns: auto minmax(0, 1fr);
         min-height: 100dvh;
-        background: var(--ds-color-bg-canvas);
+        background:
+          radial-gradient(
+            circle at 76% -12%,
+            color-mix(in srgb, var(--ds-color-accent-soft) 36%, transparent),
+            transparent 34rem
+          ),
+          var(--ds-color-bg-canvas);
       }
       .sidebar {
         position: sticky;
@@ -206,12 +237,13 @@ export class DsAppShell extends DsElement {
         z-index: var(--ds-z-sticky);
         min-height: 4.5rem;
         border-bottom: 1px solid var(--ds-color-border-subtle);
-        background: color-mix(in srgb, var(--ds-color-bg-surface-subtle) 92%, transparent);
-        backdrop-filter: blur(16px);
+        background: color-mix(in srgb, var(--ds-color-bg-surface-subtle) 86%, transparent);
+        box-shadow: 0 1px 0 color-mix(in srgb, var(--ds-color-border-highlight) 48%, transparent);
+        backdrop-filter: blur(22px) saturate(130%);
       }
       .main {
         min-width: 0;
-        padding: var(--ds-space-6);
+        padding: var(--ds-space-8);
       }
       @media (max-width: 680px) {
         :host {

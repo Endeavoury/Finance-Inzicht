@@ -35,14 +35,17 @@ export class DsDataTable extends DsElement {
         max-width: 100%;
         overflow: auto;
         border: 1px solid var(--ds-color-border-default);
-        border-radius: var(--ds-radius-md);
-        background: var(--ds-color-bg-surface);
+        border-top-color: var(--ds-color-border-highlight);
+        border-radius: var(--ds-radius-lg);
+        background: var(--ds-gradient-surface, var(--ds-color-bg-surface));
+        box-shadow: var(--ds-shadow-panel);
       }
       table {
         width: 100%;
         min-width: 38rem;
         border-collapse: collapse;
         font-size: var(--ds-font-size-md);
+        font-variant-numeric: tabular-nums;
       }
       caption {
         padding: var(--ds-space-3);
@@ -51,7 +54,7 @@ export class DsDataTable extends DsElement {
       }
       th,
       td {
-        padding: var(--ds-space-3);
+        padding: 0.8125rem var(--ds-space-4);
         border-bottom: 1px solid var(--ds-color-border-subtle);
         text-align: left;
         vertical-align: middle;
@@ -60,11 +63,11 @@ export class DsDataTable extends DsElement {
         position: sticky;
         top: 0;
         z-index: 1;
-        background: var(--ds-color-bg-surface-subtle);
+        background: color-mix(in srgb, var(--ds-color-bg-elevated) 72%, var(--ds-color-bg-surface));
         color: var(--ds-color-text-muted);
         font-size: var(--ds-font-size-xs);
         font-weight: var(--ds-font-weight-semibold);
-        letter-spacing: 0.06em;
+        letter-spacing: 0.085em;
         text-transform: uppercase;
       }
       tbody tr:last-child td {
@@ -78,7 +81,10 @@ export class DsDataTable extends DsElement {
       }
       tbody tr[data-interactive]:hover,
       tbody tr[data-selected] {
-        background: var(--ds-color-bg-selected);
+        background: color-mix(in srgb, var(--ds-color-bg-selected) 72%, transparent);
+      }
+      tbody tr[data-selected] td:first-child {
+        box-shadow: inset 2px 0 var(--ds-color-accent-primary);
       }
       tbody tr[data-interactive]:focus-visible {
         outline: 2px solid var(--ds-color-focus);
