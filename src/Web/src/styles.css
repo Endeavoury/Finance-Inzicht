@@ -32,6 +32,115 @@
   .account-settings input,.account-settings select,.account-settings .upload-btn{min-height:44px;width:100%}.settings-account-head{grid-template-columns:36px minmax(0,1fr);gap:9px}.settings-account-head strong{grid-column:2}.settings-account-head small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .raw-detail pre{max-height:280px;overflow:auto}.detail-groups section{padding:12px}.page-card.ledger-page{padding-left:12px;padding-right:12px}
 }
+
+/* Design-system integration -------------------------------------------------
+   Product-specific charts and tables stay in the application; foundations,
+   navigation, controls and feedback are owned by the Web Component package. */
+html[data-ds-theme='dark'] body{
+  color:var(--ds-color-text-primary);
+  background:var(--ds-color-bg-canvas);
+}
+ds-app-shell.shell{
+  min-height:100dvh;
+  background:var(--ds-color-bg-canvas);
+}
+ds-app-shell::part(main){padding:0}
+ds-app-shell::part(header){border-color:var(--ds-color-border-subtle)}
+ds-app-shell>main{
+  display:block;
+  width:100%;
+  max-width:1500px;
+  margin:auto;
+  padding:30px 34px 60px;
+}
+ds-sidebar{
+  box-sizing:border-box;
+  background:var(--ds-color-bg-surface-subtle);
+}
+ds-sidebar .brand{
+  padding:0;
+  color:var(--ds-color-text-secondary);
+}
+ds-sidebar .brand-copy{line-height:1.08}
+ds-sidebar .brand-copy b{color:var(--ds-color-text-primary)}
+ds-sidebar .sidebar-toggle{margin-left:auto}
+ds-sidebar .secondary-nav-group{display:contents}
+ds-sidebar .side-note{
+  display:grid;
+  gap:var(--ds-space-2);
+  margin:0;
+  padding:var(--ds-space-3);
+  border:1px solid var(--ds-color-border-subtle);
+  border-radius:var(--ds-radius-md);
+  background:var(--ds-color-bg-surface);
+}
+ds-sidebar .side-note small{color:var(--ds-color-text-muted);line-height:1.45}
+ds-app-shell.compact ds-sidebar{width:4.75rem;padding-inline:var(--ds-space-3)}
+ds-app-shell.compact ds-sidebar .brand{justify-content:center}
+ds-app-shell.compact ds-sidebar .brand-copy,
+ds-app-shell.compact ds-sidebar .side-note{display:none}
+ds-app-shell.compact ds-sidebar-item::part(item){justify-content:center;padding-inline:var(--ds-space-2);font-size:0}
+.app-header{
+  min-height:4.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--ds-space-4);
+  padding:0 var(--ds-space-6);
+}
+.app-header small{display:block;color:var(--ds-color-text-muted);font-size:var(--ds-font-size-xs);letter-spacing:.12em;text-transform:uppercase}
+.app-header h1{margin:2px 0 0;color:var(--ds-color-text-primary);font-size:var(--ds-font-size-xl);line-height:1.2}
+.app-header .header-actions{display:flex;align-items:center;gap:var(--ds-space-2)}
+.app-header .language-switch{width:8.5rem}
+.app-header .language-switch::part(label){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.app-header .profile-chip::part(button){padding-inline:var(--ds-space-2)}
+.app-header .profile-name{max-width:8rem;overflow:hidden;text-overflow:ellipsis}
+ds-alert.offline-banner{margin:0;border-radius:0}
+ds-alert.offline-banner::part(alert){border-width:0 0 1px;border-radius:0}
+ds-loading-state{margin-bottom:var(--ds-space-5)}
+ds-card.login-card{
+  width:min(100%,430px);
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+ds-card.login-card::part(card){box-shadow:var(--ds-shadow-lg)}
+ds-card.login-card::part(body){display:grid;gap:var(--ds-space-4);padding:var(--ds-space-7)}
+ds-card.login-card .brand{padding:0 0 var(--ds-space-2)}
+ds-card.login-card h1,ds-card.login-card p{margin:0}
+ds-card.login-card ds-alert{margin-block:var(--ds-space-1)}
+.login-page{
+  background:radial-gradient(circle at 50% 0,var(--ds-color-accent-soft),transparent 34%),var(--ds-color-bg-canvas);
+}
+
+@media(max-width:680px){
+  ds-app-shell>main{padding:16px 12px calc(5.25rem + env(safe-area-inset-bottom))}
+  .app-header{min-height:4rem;padding:0 var(--ds-space-3)}
+  .app-header small,.app-header .profile-name,.app-header .header-import{display:none}
+  .app-header h1{font-size:var(--ds-font-size-lg);max-width:9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .app-header .language-switch{width:6.7rem}
+  ds-app-shell.compact ds-sidebar{width:auto;padding-inline:var(--ds-space-2)}
+  ds-app-shell.compact ds-sidebar-item::part(item){font-size:.625rem}
+  ds-sidebar .secondary-nav-group{display:none}
+  ds-sidebar .secondary-nav-group.open{
+    position:fixed;
+    z-index:calc(var(--ds-z-sticky) + 1);
+    left:var(--ds-space-3);
+    right:var(--ds-space-3);
+    bottom:calc(4.75rem + env(safe-area-inset-bottom));
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:var(--ds-space-1);
+    padding:var(--ds-space-3);
+    border:1px solid var(--ds-color-border-default);
+    border-radius:var(--ds-radius-lg);
+    background:var(--ds-color-bg-elevated);
+    box-shadow:var(--ds-shadow-lg);
+  }
+  ds-sidebar .secondary-nav-group.open ds-sidebar-item::part(item){min-height:2.75rem;flex-direction:row;justify-content:flex-start;gap:var(--ds-space-2);padding-inline:var(--ds-space-3);font-size:var(--ds-font-size-sm)}
+  ds-card.login-card::part(body){padding:var(--ds-space-5)}
+}
 /* Visual system v2: clearer hierarchy, richer feedback, and coherent page surfaces */
 :root{--canvas:#f3f7f5;--canvas-deep:#e8f0ed;--surface:#ffffff;--surface-muted:#f7faf8;--surface-strong:#ecf5f1;--border:#d9e5e0;--border-strong:#c7d9d2;--shadow-xs:0 1px 2px #122b2510;--shadow-sm:0 8px 22px #163c3310;--shadow-md:0 18px 40px #153a3018;--radius:16px;--radius-sm:11px;--income:#16815f;--expense:#cf6558;--transfer:#617fba}
 body{background:radial-gradient(circle at 80% -5%,#dcece5 0,transparent 29%),var(--canvas)}.workspace>header{background:#fffffff0;backdrop-filter:blur(16px);box-shadow:0 1px 0 #dce6e2,0 6px 20px #1c4a3b08}.workspace>header:after{content:'';position:absolute;right:0;bottom:-1px;left:0;height:1px;background:linear-gradient(90deg,transparent,#c9ddd5 20%,#c9ddd5 80%,transparent)}main{padding-top:34px}.page-card,.panel,.kpi,.mini{box-shadow:var(--shadow-xs);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,background .2s ease}.page-card{border-radius:var(--radius);border-color:var(--border);background:linear-gradient(145deg,#fff,#fcfefd)}.panel{border-radius:var(--radius-sm);border-color:var(--border);background:linear-gradient(145deg,#fff,#fcfefd)}.chart-grid>.panel:nth-child(4n+2){background:linear-gradient(145deg,#fefffe,#f5faf7)}.chart-grid>.panel:nth-child(4n+3){background:linear-gradient(145deg,#fffefd,#fdf9f3)}.panel:hover{border-color:var(--border-strong);box-shadow:var(--shadow-sm)}.page-card{animation:page-in .28s cubic-bezier(.2,.75,.2,1) both}@keyframes page-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -395,4 +504,44 @@ tbody tr:hover,.transaction-row:hover,.transaction-row.selected{background:#151e
   .pace-stats div{background:#141c26}
   .transfer-totals span{background:#131a24}
   .ledger-balance-table tr:not(.ledger-editor-row){background:#101720;border-color:#27313e}
+}
+
+/* Host-level composition for the integrated design-system components. */
+ds-kpi-grid.primary{margin-bottom:var(--ds-space-3)}
+ds-kpi-grid ds-metric{min-width:0;cursor:default}
+ds-kpi-grid ds-metric.dashboard-link{cursor:pointer}
+ds-kpi-grid ds-metric.dashboard-link:focus-visible{outline:2px solid var(--ds-color-focus);outline-offset:2px;border-radius:var(--ds-radius-lg)}
+ds-kpi-grid.primary ds-metric::part(metric){min-height:9rem}
+ds-kpi-grid.secondary ds-metric::part(metric){min-height:7.5rem;padding:var(--ds-space-3)}
+ds-kpi-grid.secondary ds-metric::part(value){font-size:var(--ds-font-size-xl)}
+ds-button-group.period{max-width:100%;overflow-x:auto;border:1px solid var(--ds-color-border-subtle);background:var(--ds-color-bg-surface-subtle);box-shadow:none}
+ds-button-group.period ds-button{flex:0 0 auto}
+.account-settings ds-input,.account-settings ds-select{margin:var(--ds-space-3) 0}
+.account-settings ds-button{margin-top:var(--ds-space-1)}
+.period-navigator>ds-icon-button{align-self:end}
+.ledger-tools ds-search-input.search{width:300px;min-width:0;padding:0;border:0;background:transparent}
+.page-card>ds-alert{margin-top:var(--ds-space-4)}
+.drop ds-icon{width:2rem;height:2rem;color:var(--ds-color-info)}
+.drop:hover ds-icon,.drop.dragging ds-icon{animation:upload-bob .7s ease-in-out infinite alternate}
+.category-editor ds-checkbox{align-self:center;padding-bottom:var(--ds-space-2)}
+.ds-form-grid{display:grid;grid-template-columns:repeat(4,minmax(9rem,1fr)) auto;align-items:end}
+.ds-form-grid ds-button{margin-bottom:1px}
+.table-wrap ds-empty-state{margin:var(--ds-space-4) 0}
+td ds-badge+small{display:block}
+
+@media(max-width:900px){
+  .ds-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  ds-kpi-grid.primary,ds-kpi-grid.secondary{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--ds-space-2)}
+  ds-kpi-grid.primary ds-metric::part(metric){min-height:7.75rem;padding:var(--ds-space-3)}
+  ds-kpi-grid ds-metric::part(value){font-size:var(--ds-font-size-xl)}
+  ds-button-group.period{width:100%;margin-top:var(--ds-space-4)}
+  .hero-row{display:grid}
+  .ds-form-grid{grid-template-columns:1fr}
+  .category-editor ds-checkbox{grid-column:1/-1}
+  .ledger-tools ds-search-input.search{width:100%}
+}
+@media(max-width:380px){
+  ds-kpi-grid.primary,ds-kpi-grid.secondary{grid-template-columns:1fr}
 }

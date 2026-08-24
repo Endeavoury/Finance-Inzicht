@@ -39,7 +39,15 @@ jobs:
         with:
           node-version: 26.5.0
           cache: npm
-          cache-dependency-path: src/Web/package-lock.json
+          cache-dependency-path: |
+            design-system/package-lock.json
+            src/Web/package-lock.json
+
+      - name: Build design-system packages
+        working-directory: design-system
+        run: |
+          npm ci
+          npm run build:packages
 
       - name: Build web application
         working-directory: src/Web
