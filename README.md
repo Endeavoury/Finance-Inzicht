@@ -16,26 +16,31 @@ Viewer: http://localhost:4200 · Design system: http://localhost:6006 · Swagger
 
 The reusable design system is maintained in the separate
 [Finance-DesignSystem](https://github.com/Endeavoury/Finance-DesignSystem)
-repository. Finance Inzicht references it as the `design-system/` Git
-submodule, so both repositories remain available to local development tools
-and Codex without mixing their histories.
+repository. The two repositories live beside each other, so local development
+tools and Codex can inspect both without mixing their working trees or history.
 
-Clone both repositories in one command:
+```text
+Finance-Inzicht/
+├── application/  → Endeavoury/Finance-Inzicht
+└── design/       → Endeavoury/Finance-DesignSystem
+```
+
+Create the application checkout, then let the setup script prepare the sibling
+design repository:
 
 ```sh
-git clone --recurse-submodules git@github.com:Endeavoury/Finance-Inzicht.git
-cd Finance-Inzicht
+mkdir Finance-Inzicht && cd Finance-Inzicht
+git clone git@github.com:Endeavoury/Finance-Inzicht.git application
+cd application
 ./scripts/setup-workspace.sh
 ```
 
-For an existing checkout, the same setup script initializes or updates the
-submodule, checks out its `main` branch, builds the design-system packages, and
+The setup script clones or updates `../design`, builds its packages, and
 installs the web application's dependencies.
 
-When a change affects both repositories, commit and push inside
-`design-system/` first. Then commit the updated submodule revision in
-Finance Inzicht. `docker compose up --build` continues to run the application
-and standalone Storybook together.
+When a change affects both repositories, commit and push from each sibling
+repository independently. Run `docker compose up --build` from `application/`
+to start the application and the sibling design-system Storybook together.
 
 ## Offline use
 

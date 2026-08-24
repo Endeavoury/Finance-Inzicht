@@ -17,6 +17,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
+  FINANCE_DESIGN_SYSTEM_REF: eb4be0d3e8481b0da21ee7fd66c8f776dfff11ee
 
 jobs:
   verify:
@@ -25,8 +26,13 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Check out design system
+        run: |
+          git init ../design
+          git -C ../design remote add origin https://github.com/Endeavoury/Finance-DesignSystem.git
+          git -C ../design fetch --depth 1 origin "$FINANCE_DESIGN_SYSTEM_REF"
+          git -C ../design checkout --detach FETCH_HEAD
 
       - name: Set up .NET 10
         uses: actions/setup-dotnet@v4
@@ -41,12 +47,10 @@ jobs:
         with:
           node-version: 26.5.0
           cache: npm
-          cache-dependency-path: |
-            design-system/package-lock.json
-            src/Web/package-lock.json
+          cache-dependency-path: src/Web/package-lock.json
 
       - name: Build design-system packages
-        working-directory: design-system
+        working-directory: ../design
         run: |
           npm ci
           npm run build:packages
@@ -77,8 +81,6 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

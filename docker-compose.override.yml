@@ -51,4 +51,4 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: ./design-system
+          path: ../design

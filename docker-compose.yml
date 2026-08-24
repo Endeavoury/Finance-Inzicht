@@ -98,8 +98,8 @@ services:
     networks: [backend]
   design-system:
     build:
-      context: .
-      dockerfile: design-system/Dockerfile
+      context: ${FINANCE_DESIGN_SYSTEM_CONTEXT:-../design}
+      dockerfile: Dockerfile
     ports:
       - "${DESIGN_SYSTEM_PORT:-6006}:8080"
     healthcheck:

@@ -16,6 +16,7 @@
 *.snupkg
 
 # Angular / Node generated output and diagnostics
+/design-system/
 **/node_modules/
 **/dist/
 **/.angular/
