@@ -47,3 +47,8 @@ services:
           path: ./src/Web
         - action: rebuild
           path: ./deploy/nginx/default.conf
+  design-system:
+    develop:
+      watch:
+        - action: rebuild
+          path: ./design-system

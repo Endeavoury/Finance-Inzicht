@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-08-24T10:55:40.127Z",
+  "budgets": {
+    "button": {
+      "rawBytes": 45000,
+      "gzipBytes": 12000
+    },
+    "forms": {
+      "rawBytes": 60000,
+      "gzipBytes": 14000
+    },
+    "full": {
+      "rawBytes": 130000,
+      "gzipBytes": 22000
+    }
+  },
+  "bundles": {
+    "button": {
+      "rawBytes": 32671,
+      "gzipBytes": 10337
+    },
+    "forms": {
+      "rawBytes": 39945,
+      "gzipBytes": 11121
+    },
+    "full": {
+      "rawBytes": 91606,
+      "gzipBytes": 18970
+    }
+  },
+  "sharedControlFoundationOccurrences": 1,
+  "sharedSpinnerFoundationOccurrences": 1
+}

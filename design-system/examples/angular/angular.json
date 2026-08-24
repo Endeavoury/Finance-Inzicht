@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "projects": {
+    "example": {
+      "projectType": "application",
+      "root": ".",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "styles": ["@finance-inzicht/design-system/styles.css"],
+            "outputPath": "dist"
+          }
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": { "buildTarget": "example:build" }
+        }
+      }
+    }
+  },
+  "cli": { "analytics": false }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@finance-inzicht/tokens",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "scripts": {
+    "build": "tsc -b && cp src/tokens.css dist/tokens.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

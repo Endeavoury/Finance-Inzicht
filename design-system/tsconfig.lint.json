@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["node", "vitest/globals", "vite/client"]
+  },
+  "include": [
+    "packages/**/*.ts",
+    "storybook/.storybook/*.ts",
+    "storybook/**/*.ts",
+    "examples/**/*.ts",
+    "examples/**/*.tsx",
+    "tests/**/*.ts",
+    "vitest.config.ts"
+  ],
+  "exclude": ["**/dist/**", "**/storybook-static/**"]
+}

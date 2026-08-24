@@ -10,7 +10,7 @@ Requirements: Docker, or .NET SDK 10.0 plus Node 26.5.0. Copy `.env.example` to 
 docker compose up --build
 ```
 
-Viewer: http://localhost:4200 · Swagger: http://localhost:8080/swagger · MinIO console: http://localhost:9001. The API and worker create the schema on startup for milestone one; use reviewed EF migrations instead of `EnsureCreated` before evolving a production database.
+Viewer: http://localhost:4200 · Design system: http://localhost:6006 · Swagger: http://localhost:8080/swagger · MinIO console: http://localhost:9001. The API and worker create the schema on startup for milestone one; use reviewed EF migrations instead of `EnsureCreated` before evolving a production database.
 
 ## Offline use
 
