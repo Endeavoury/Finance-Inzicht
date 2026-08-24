@@ -12,6 +12,31 @@ docker compose up --build
 
 Viewer: http://localhost:4200 · Design system: http://localhost:6006 · Swagger: http://localhost:8080/swagger · MinIO console: http://localhost:9001. The API and worker create the schema on startup for milestone one; use reviewed EF migrations instead of `EnsureCreated` before evolving a production database.
 
+## Application and design-system workspace
+
+The reusable design system is maintained in the separate
+[Finance-DesignSystem](https://github.com/Endeavoury/Finance-DesignSystem)
+repository. Finance Inzicht references it as the `design-system/` Git
+submodule, so both repositories remain available to local development tools
+and Codex without mixing their histories.
+
+Clone both repositories in one command:
+
+```sh
+git clone --recurse-submodules git@github.com:Endeavoury/Finance-Inzicht.git
+cd Finance-Inzicht
+./scripts/setup-workspace.sh
+```
+
+For an existing checkout, the same setup script initializes or updates the
+submodule, checks out its `main` branch, builds the design-system packages, and
+installs the web application's dependencies.
+
+When a change affects both repositories, commit and push inside
+`design-system/` first. Then commit the updated submodule revision in
+Finance Inzicht. `docker compose up --build` continues to run the application
+and standalone Storybook together.
+
 ## Offline use
 
 After a successful sign-in, the web app stores a user-scoped snapshot of the dashboard, monthly/year views, transactions, imports, and account settings in IndexedDB. The application shell is installed by a service worker, so the frontend can be reopened and browsed when the API or network is unavailable. Filters and monthly views are calculated from the saved snapshot where possible.
