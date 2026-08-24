@@ -1,0 +1,10 @@
+{
+  "name": "Finance Inzicht",
+  "short_name": "Finance Inzicht",
+  "description": "Private financial insight from your bank statements",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f6f5",
+  "theme_color": "#102d28"
+}

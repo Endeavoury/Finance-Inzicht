@@ -12,6 +12,12 @@ docker compose up --build
 
 Viewer: http://localhost:4200 · Swagger: http://localhost:8080/swagger · MinIO console: http://localhost:9001. The API and worker create the schema on startup for milestone one; use reviewed EF migrations instead of `EnsureCreated` before evolving a production database.
 
+## Offline use
+
+After a successful sign-in, the web app stores a user-scoped snapshot of the dashboard, monthly/year views, transactions, imports, and account settings in IndexedDB. The application shell is installed by a service worker, so the frontend can be reopened and browsed when the API or network is unavailable. Filters and monthly views are calculated from the saved snapshot where possible.
+
+Edits, user-management changes, and CAMT uploads made offline are queued in the browser and replayed in order when the server is reachable again. The interface shows offline and pending-sync status. A user must sign in online at least once on that browser; browser storage limits also apply to queued XML/ZIP files.
+
 ## Architecture
 
 ```mermaid
