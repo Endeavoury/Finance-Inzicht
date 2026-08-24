@@ -2,6 +2,8 @@
 
 Production-oriented milestone-one bank-data ingestion: upload CAMT.053 XML or a ZIP batch, store immutable sources privately in MinIO, process jobs concurrently through PostgreSQL, and view normalized accounts and transactions. This is deliberately not an accounting ledger and includes no PSD2 connection, payments, categorization, budgeting, or authentication.
 
+![Finance Inzicht application and design-system example](docs/images/finance-workspace-example.png)
+
 ## Start
 
 Requirements: Docker, or .NET SDK 10.0 plus Node 26.5.0. Copy `.env.example` to `.env` and replace credentials, then run:
