@@ -1,4 +1,0 @@
-[submodule "design-system"]
-	path = design-system
-	url = git@github.com:Endeavoury/Finance-DesignSystem.git
-	branch = main
