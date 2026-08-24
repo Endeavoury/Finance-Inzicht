@@ -4,7 +4,7 @@ import {HttpClient, HttpInterceptorFn, provideHttpClient, withInterceptors} from
 import {CommonModule} from '@angular/common';
 import {UI, categoryText, type Language, type TranslationKey} from './i18n';
 import {OfflineService, offlineInterceptor} from './offline';
-import '@finance-design/design-system';
+import '@endeavoury/finance-design';
 
 type CategoryGroup={name:string;subcategories:string[]};
 type ImportRow={id:string;originalFileName:string;status:number;createdAtUtc:string;transactionCount:number;warningCount:number};

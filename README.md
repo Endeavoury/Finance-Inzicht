@@ -40,9 +40,9 @@ cd application
 The setup script clones or updates `../design`, builds its packages, and
 installs the web application's dependencies.
 
-Design-system packages use the `@finance-design/*` scope. Local development
-resolves them from the sibling `design/` checkout, while released versions are
-published by the design repository to GitHub Packages.
+Design-system packages use the `@endeavoury/finance-design*` package family.
+Local development resolves them from the sibling `design/` checkout, while
+released versions are published by the design repository to GitHub Packages.
 
 When a change affects both repositories, commit and push from each sibling
 repository independently. Run `docker compose up --build` from `application/`

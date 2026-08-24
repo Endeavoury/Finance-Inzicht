@@ -1,5 +1,5 @@
 FROM node:26.5.0-alpine AS build
-ARG FINANCE_DESIGN_SYSTEM_REF=c19cf3663c9f1d7209a4f91a345791fe463dc300
+ARG FINANCE_DESIGN_SYSTEM_REF=9610698e98eb71ad803c8b16c17401e716f1c963
 RUN apk add --no-cache git
 WORKDIR /workspace/design
 RUN git clone https://github.com/Endeavoury/Finance-DesignSystem.git . \
