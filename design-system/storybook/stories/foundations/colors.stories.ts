@@ -17,6 +17,7 @@ const semantic = [
   'danger',
   'info',
 ];
+const dataVisualization = Array.from({ length: 8 }, (_, index) => `data-${index + 1}`);
 const meta: Meta = {
   title: 'Foundations/Colors',
   tags: ['autodocs'],
@@ -66,6 +67,48 @@ export const SemanticTokens: StoryObj = {
               <div class="copy">
                 <code>--ds-color-${name}</code><span>${name.replaceAll('-', ' ')}</span>
               </div>
+            </div>`,
+        )}
+      </div>`,
+};
+
+export const DataVisualization: StoryObj = {
+  render: () =>
+    html`<style>
+        .palette {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: var(--ds-space-3);
+          margin-top: var(--ds-space-5);
+        }
+        .swatch {
+          overflow: hidden;
+          border: 1px solid var(--ds-color-border-default);
+          border-radius: var(--ds-radius-md);
+          background: var(--ds-color-bg-surface);
+        }
+        .color {
+          height: 88px;
+          background: var(--token);
+        }
+        code {
+          display: block;
+          padding: var(--ds-space-3);
+          color: var(--ds-color-text-secondary);
+          font-size: var(--ds-font-size-xs);
+        }
+      </style>
+      <h1>Data visualization</h1>
+      <p>
+        A theme-aware categorical palette for charts. Preserve the sequence so the same series has
+        a stable visual identity across products.
+      </p>
+      <div class="palette">
+        ${dataVisualization.map(
+          (name) =>
+            html`<div class="swatch" style=${`--token:var(--ds-color-${name})`}>
+              <div class="color"></div>
+              <code>--ds-color-${name}</code>
             </div>`,
         )}
       </div>`,
