@@ -1,4 +1,4 @@
-const SHELL_CACHE='finance-inzicht-shell-v1';
+const SHELL_CACHE='finance-inzicht-shell-v2';
 const CORE=['/','/index.html','/manifest.webmanifest'];
 
 async function cacheApplicationShell(){

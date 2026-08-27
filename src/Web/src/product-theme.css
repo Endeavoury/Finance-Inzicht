@@ -33,6 +33,21 @@ body {
   font-family: var(--ds-font-sans);
 }
 
+html[data-ds-theme='light'] {
+  color-scheme: light;
+}
+
+html[data-ds-theme='dark'] {
+  color-scheme: dark;
+}
+
+button,
+input,
+select,
+textarea {
+  color-scheme: inherit;
+}
+
 body {
   min-height: 100dvh;
   background:
@@ -93,6 +108,28 @@ ds-sidebar .brandmark,
   font-size: var(--ds-font-size-xl);
   font-weight: var(--ds-font-weight-semibold);
   letter-spacing: var(--ds-letter-spacing-tight);
+}
+
+.theme-switch,
+.login-theme-switch {
+  flex: 0 0 auto;
+}
+
+.theme-glyph {
+  display: grid;
+  place-items: center;
+  width: var(--ds-icon-md);
+  height: var(--ds-icon-md);
+  color: currentColor;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.login-theme-switch {
+  position: fixed;
+  top: max(var(--ds-space-5), env(safe-area-inset-top));
+  right: max(var(--ds-space-5), env(safe-area-inset-right));
+  z-index: var(--ds-z-sticky);
 }
 
 /* Page and analytical hierarchy */
@@ -358,6 +395,26 @@ ds-kpi-grid.secondary ds-metric::part(metric) {
   background: var(--ds-color-data-1) !important;
 }
 
+.heat-legend i {
+  background: var(--ds-color-bg-hover) !important;
+}
+
+.heat-legend i:nth-child(3) {
+  background: color-mix(in srgb, var(--ds-color-data-1) 22%, var(--ds-color-bg-hover)) !important;
+}
+
+.heat-legend i:nth-child(4) {
+  background: color-mix(in srgb, var(--ds-color-data-1) 40%, var(--ds-color-bg-hover)) !important;
+}
+
+.heat-legend i:nth-child(5) {
+  background: color-mix(in srgb, var(--ds-color-data-1) 62%, var(--ds-color-bg-hover)) !important;
+}
+
+.heat-legend i:nth-child(6) {
+  background: var(--ds-color-data-1) !important;
+}
+
 .metrics dt,
 .metrics dd {
   color: var(--ds-color-text-secondary);
@@ -522,6 +579,99 @@ ds-kpi-grid.secondary ds-metric::part(metric) {
 
 .calendar-day.h4 small {
   color: var(--ds-color-text-inverse);
+}
+
+.calendar-day.h1 {
+  background: color-mix(in srgb, var(--ds-color-data-1) 18%, var(--ds-color-bg-surface-subtle));
+}
+
+.calendar-day.h2 {
+  background: color-mix(in srgb, var(--ds-color-data-1) 32%, var(--ds-color-bg-surface-subtle));
+}
+
+.calendar-day.h3 {
+  background: color-mix(in srgb, var(--ds-color-data-1) 52%, var(--ds-color-bg-surface-subtle));
+  color: var(--ds-color-text-primary);
+}
+
+.pace-ring {
+  background: conic-gradient(
+    var(--ds-color-accent-primary) var(--pace),
+    var(--ds-color-bg-sunken) 0
+  );
+}
+
+.pace-ring::before {
+  background: var(--ds-color-bg-surface);
+}
+
+.pace-ring strong,
+.pace-stats dd,
+.detail-category-heading,
+.detail-category-heading > strong,
+.period-details > summary {
+  color: var(--ds-color-text-primary);
+}
+
+.pace-ring small,
+.pace-stats dt,
+.calendar-weekdays span,
+.detail-category-heading small,
+.period-panel .panel-head > small,
+.pattern-head b,
+.year-pattern > button,
+.category-trend > div,
+.transfer-totals span {
+  color: var(--ds-color-text-muted);
+}
+
+.category-bars,
+.month-card-rail {
+  border-color: var(--ds-color-border-default);
+  background: var(--ds-color-border-default);
+}
+
+.category-bars em {
+  background: var(--ds-color-bg-sunken);
+}
+
+.category-bars em i,
+.year-pattern > button i {
+  background: var(--ds-color-accent-primary);
+}
+
+.period-details {
+  border-color: var(--ds-color-border-default);
+}
+
+.period-details[open] > summary,
+.balance-column-head,
+.period-transactions {
+  border-color: var(--ds-color-border-subtle);
+}
+
+.detail-category-group {
+  border-color: var(--ds-color-border-default);
+  background: var(--ds-color-bg-surface-subtle);
+}
+
+.year-pattern > button:hover,
+.year-pattern > button.selected {
+  background: var(--ds-color-bg-selected);
+  color: var(--ds-color-text-primary);
+}
+
+.positive,
+.amount,
+.credit-value,
+.incoming-head > b {
+  color: var(--ds-color-success) !important;
+}
+
+.negative,
+.debit-value,
+.outgoing-head > b {
+  color: var(--ds-color-danger) !important;
 }
 
 .calendar-day,
@@ -741,6 +891,35 @@ tbody tr:hover,
   background: var(--ds-color-bg-sunken);
   color: var(--ds-color-text-secondary);
   box-shadow: inset 0 1px 8px rgb(0 0 0 / 24%);
+}
+
+.raw-detail pre,
+.detail-groups dt,
+.detail-amount small,
+.category-feedback,
+.period-transactions small,
+.period-transactions em {
+  color: var(--ds-color-text-muted);
+}
+
+.detail-groups h4,
+.expand-btn,
+.category-pill,
+.category-inline {
+  color: var(--ds-color-info) !important;
+}
+
+.expand-btn,
+.category-pill {
+  border-color: var(--ds-color-border-default);
+  background: var(--ds-color-info-soft);
+}
+
+.loading,
+.empty {
+  border-color: var(--ds-color-border-default);
+  background: var(--ds-color-bg-surface-subtle);
+  color: var(--ds-color-text-muted);
 }
 
 .result-count {

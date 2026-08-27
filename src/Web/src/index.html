@@ -1,1 +1,21 @@
-<!doctype html><html lang="en" data-ds-theme="dark"><head><meta charset="utf-8"><title>Finance Inzicht</title><base href="/"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080b10"><meta name="description" content="Private, offline-capable financial insight from your bank statements"><link rel="manifest" href="/manifest.webmanifest"></head><body><app-root></app-root></body></html>
+<!doctype html>
+<html lang="en" data-ds-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <title>Finance Inzicht</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#07090d">
+    <meta name="description" content="Private, offline-capable financial insight from your bank statements">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <script>
+      (() => {
+        const theme = localStorage.getItem('finance-theme') === 'light' ? 'light' : 'dark';
+        document.documentElement.dataset.dsTheme = theme;
+        document.querySelector('meta[name="theme-color"]').content =
+          theme === 'dark' ? '#07090d' : '#f3f5f8';
+      })();
+    </script>
+  </head>
+  <body><app-root></app-root></body>
+</html>
