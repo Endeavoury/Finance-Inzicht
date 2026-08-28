@@ -115,16 +115,6 @@ ds-sidebar .brandmark,
   flex: 0 0 auto;
 }
 
-.theme-glyph {
-  display: grid;
-  place-items: center;
-  width: var(--ds-icon-md);
-  height: var(--ds-icon-md);
-  color: currentColor;
-  font-size: 1.05rem;
-  line-height: 1;
-}
-
 .login-theme-switch {
   position: fixed;
   top: max(var(--ds-space-5), env(safe-area-inset-top));
@@ -974,12 +964,8 @@ tbody tr:hover,
   margin-inline: auto;
 }
 
-ds-panel.upload-surface::part(panel) {
-  padding: var(--ds-space-5);
-}
-
-.upload-surface .drop {
-  margin: 0;
+ds-drop-zone.upload-surface {
+  width: 100%;
 }
 
 .data-note > ds-icon {
