@@ -1,4 +1,4 @@
-namespace FinanceInzicht.Application;
+namespace Oikonomis.Application;
 
 public sealed record CategoryGroup(string Name, IReadOnlyList<string> Subcategories);
 public sealed record CategoryMatch(string Category, string Subcategory);

@@ -1,4 +1,4 @@
-const SHELL_CACHE='finance-inzicht-shell-v3';
+const SHELL_CACHE='oikonomis-shell-v3';
 const CORE=['/','/index.html','/manifest.webmanifest'];
 
 async function cacheApplicationShell(){
@@ -13,7 +13,7 @@ async function cacheApplicationShell(){
 }
 
 self.addEventListener('install',event=>event.waitUntil(cacheApplicationShell().then(()=>self.skipWaiting())));
-self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('finance-inzicht-shell-')&&key!==SHELL_CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('oikonomis-shell-')&&key!==SHELL_CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{
   const request=event.request,url=new URL(request.url);
   if(request.method!=='GET'||url.origin!==self.location.origin||url.pathname.startsWith('/api/'))return;

@@ -6,7 +6,7 @@ type StoredResponse={key:string;scope:string;body:unknown;status:number;statusTe
 type StoredBody={kind:'empty'|'json'|'text'|'blob'|'form-data';value?:unknown;entries?:{name:string;value:string|Blob;fileName?:string}[]};
 type QueuedMutation={id?:number;scope:string;method:string;url:string;headers:[string,string][];body:StoredBody;createdAt:number};
 
-const DB_NAME='finance-inzicht-offline';
+const DB_NAME='oikonomis-offline';
 const DB_VERSION=1;
 const RESPONSES='responses';
 const MUTATIONS='mutations';

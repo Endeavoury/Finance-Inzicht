@@ -1,4 +1,4 @@
-namespace FinanceInzicht.Domain;
+namespace Oikonomis.Domain;
 public enum ImportStatus { Pending, Processing, Completed, CompletedWithWarnings, Failed, Duplicate }
 public enum CreditDebitIndicator { Credit, Debit }
 public enum BankAccountKind { Current, Savings, Credit, Investment, Other }

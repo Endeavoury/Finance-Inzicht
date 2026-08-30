@@ -4,7 +4,7 @@ import {HttpClient, HttpInterceptorFn, provideHttpClient, withInterceptors} from
 import {CommonModule} from '@angular/common';
 import {UI, categoryText, type Language, type TranslationKey} from './i18n';
 import {OfflineService, offlineInterceptor} from './offline';
-import '@endeavoury/finance-design';
+import '@endeavoury/kanosis';
 
 type CategoryGroup={name:string;subcategories:string[]};
 type ImportRow={id:string;originalFileName:string;status:number;createdAtUtc:string;transactionCount:number;warningCount:number};
@@ -21,7 +21,7 @@ type AppTheme='light'|'dark';
 <section *ngIf="!authUser()" class="login-page">
   <ds-theme-toggle class="login-theme-switch" [theme]="theme()" storage-key="finance-theme" [lightLabel]="t('switchToLightTheme')" [darkLabel]="t('switchToDarkTheme')" (ds-theme-change)="setTheme($event)"></ds-theme-toggle>
   <ds-card class="login-card">
-    <div class="brand"><span class="brandmark">F</span><span>Finance<br><b>Inzicht</b></span></div>
+    <div class="brand"><span class="brandmark">O</span><span><b>Oikonomis</b></span></div>
     <p class="eyebrow">{{setupRequired()?'First-time setup':'Secure sign in'}}</p>
     <h1>{{setupRequired()?'Create administrator':'Welcome back'}}</h1>
     <p class="muted">{{setupRequired()?'Create the first local administrator to protect your financial data.':'Sign in to continue to your private financial dashboard.'}}</p>
@@ -34,7 +34,7 @@ type AppTheme='light'|'dark';
 </section>
 <ds-app-shell *ngIf="authUser()" class="shell" [class.compact]="sidebarCompact()">
   <ds-sidebar slot="sidebar" [label]="t('toggleNavigation')">
-    <div slot="brand" class="brand"><span class="brandmark">F</span><span class="brand-copy">Finance<br><b>Inzicht</b></span><ds-icon-button class="sidebar-toggle" [label]="t('toggleNavigation')" (click)="toggleSidebar()"><ds-icon name="menu"></ds-icon></ds-icon-button></div>
+    <div slot="brand" class="brand"><span class="brandmark">O</span><span class="brand-copy"><b>Oikonomis</b></span><ds-icon-button class="sidebar-toggle" [label]="t('toggleNavigation')" (click)="toggleSidebar()"><ds-icon name="menu"></ds-icon></ds-icon-button></div>
     <ds-sidebar-item class="core-nav" value="dashboard" [active]="tab()==='dashboard'" (ds-activate)="mobileMenuOpen.set(false);showDashboard()"><ds-icon slot="icon" name="home"></ds-icon>{{t('overview')}}</ds-sidebar-item>
     <ds-sidebar-item class="core-nav" value="monthly" [active]="tab()==='monthly'" (ds-activate)="mobileMenuOpen.set(false);loadMonthlyOverview()"><ds-icon slot="icon" name="calendar"></ds-icon>{{t('monthlyOverview')}}</ds-sidebar-item>
     <ds-sidebar-item class="core-nav" value="year" [active]="tab()==='year'" (ds-activate)="mobileMenuOpen.set(false);loadYearOverview()"><ds-icon slot="icon" name="chart"></ds-icon>{{t('yearOverview')}}</ds-sidebar-item>

@@ -2,9 +2,9 @@ using System.Globalization;
 using System.Text.Json;
 using System.Xml;
 using System.Xml.Linq;
-using FinanceInzicht.Application;
-using FinanceInzicht.Domain;
-namespace FinanceInzicht.Camt;
+using Oikonomis.Application;
+using Oikonomis.Domain;
+namespace Oikonomis.Camt;
 public sealed class CamtImporter : ITransactionSourceImporter
 {
  public string SourceType=>"CAMT"; public const long MaxBytes=50*1024*1024;

@@ -1,8 +1,8 @@
-# Finance Inzicht
+# Oikonomis
 
 Production-oriented milestone-one bank-data ingestion: upload CAMT.053 XML or a ZIP batch, store immutable sources privately in MinIO, process jobs concurrently through PostgreSQL, and view normalized accounts and transactions. This is deliberately not an accounting ledger and includes no PSD2 connection, payments, categorization, budgeting, or authentication.
 
-![Finance Inzicht application and design-system example](docs/images/finance-workspace-example.png)
+![Oikonomis application and design-system example](docs/images/oikonomis-workspace-example.png)
 
 ## Start
 
@@ -22,8 +22,8 @@ repository. The two repositories live beside each other, so local development
 tools and Codex can inspect both without mixing their working trees or history.
 
 ```text
-Finance-Inzicht/
-├── application/  → Endeavoury/Finance-Inzicht
+Oikonomis/
+├── application/  → Endeavoury/Oikonomis
 └── design/       → Endeavoury/Finance-DesignSystem
 ```
 
@@ -31,8 +31,8 @@ Create the application checkout, then let the setup script prepare the sibling
 design repository:
 
 ```sh
-mkdir Finance-Inzicht && cd Finance-Inzicht
-git clone git@github.com:Endeavoury/Finance-Inzicht.git application
+mkdir Oikonomis && cd Oikonomis
+git clone git@github.com:Endeavoury/Oikonomis.git application
 cd application
 ./scripts/setup-workspace.sh
 ```
@@ -40,7 +40,7 @@ cd application
 The setup script clones or updates `../design`, builds its packages, and
 installs the web application's dependencies.
 
-Design-system packages use the `@endeavoury/finance-design*` package family.
+Design-system packages use the `@endeavoury/kanosis*` package family.
 Local development resolves them from the sibling `design/` checkout, while
 released versions are published by the design repository to GitHub Packages.
 
@@ -98,8 +98,8 @@ All business routes are under `/api/v1`: imports (upload/list/detail/retry/warni
 
 ```sh
 dotnet restore
-dotnet build FinanceInzicht.slnx
-dotnet test FinanceInzicht.slnx
+dotnet build Oikonomis.slnx
+dotnet test Oikonomis.slnx
 cd src/Web
 npm install
 npm run build
@@ -111,9 +111,9 @@ Upload without the UI: `curl -F "file=@samples/camt/simple.xml" http://localhost
 
 GitHub Actions validates the .NET solution and Angular application for pull requests to `master`. On pushes to `master` and version tags beginning with `v`, it publishes the following GitHub Container Registry images:
 
-- `ghcr.io/endeavoury/finance-inzicht-api`
-- `ghcr.io/endeavoury/finance-inzicht-worker`
-- `ghcr.io/endeavoury/finance-inzicht-web`
+- `ghcr.io/endeavoury/oikonomis-api`
+- `ghcr.io/endeavoury/oikonomis-worker`
+- `ghcr.io/endeavoury/oikonomis-web`
 
 Each published image has an immutable `sha-…` tag; `master` publishes `latest` too, and release tags add semantic version tags. The workflow uses the repository `GITHUB_TOKEN`, so no manually stored registry password is needed. In repository settings, ensure **Actions → General → Workflow permissions** permits read/write access, and configure package visibility/access in GitHub Packages as appropriate for the deployment environment.
 

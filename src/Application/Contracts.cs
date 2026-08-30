@@ -1,5 +1,5 @@
-using FinanceInzicht.Domain;
-namespace FinanceInzicht.Application;
+using Oikonomis.Domain;
+namespace Oikonomis.Application;
 public interface IObjectStorage { Task PutAsync(string key,Stream content,string contentType,CancellationToken ct); Task<Stream> OpenReadAsync(string key,CancellationToken ct); Task<bool> ExistsAsync(string key,CancellationToken ct); }
 public sealed record ImportContext(Guid ImportJobId,string FileName);
 public sealed record ImportResult(IReadOnlyList<ParsedStatement> Statements,IReadOnlyList<ParsedWarning> Warnings);

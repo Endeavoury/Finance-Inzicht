@@ -1,4 +1,4 @@
-namespace FinanceInzicht.Domain;
+namespace Oikonomis.Domain;
 
 public enum CategorySource { Automatic, IbanRule, Manual }
 

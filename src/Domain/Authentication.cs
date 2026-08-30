@@ -1,4 +1,4 @@
-namespace FinanceInzicht.Domain;
+namespace Oikonomis.Domain;
 
 public enum UserRole { Administrator, User }
 

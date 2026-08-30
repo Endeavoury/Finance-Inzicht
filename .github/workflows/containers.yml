@@ -1,4 +1,4 @@
-name: Build and publish containers
+name: Build and publish Oikonomis containers
 
 on:
   pull_request:
@@ -19,7 +19,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  FINANCE_DESIGN_SYSTEM_REF: 8f0394c5918e16acea82bcb0928b2ce7d10307c7
+  KANOSIS_REF: d49785536eb57735f1b7869631be6e51c051744f
   RELEASE_REF: ${{ github.event.client_payload.tag || github.ref }}
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
         run: |
           git init ../design
           git -C ../design remote add origin https://github.com/Endeavoury/Finance-DesignSystem.git
-          git -C ../design fetch --depth 1 origin "$FINANCE_DESIGN_SYSTEM_REF"
+          git -C ../design fetch --depth 1 origin "$KANOSIS_REF"
           git -C ../design checkout --detach FETCH_HEAD
 
       - name: Set up .NET 10
@@ -45,7 +45,7 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore and test .NET
-        run: dotnet test FinanceInzicht.slnx --configuration Release
+        run: dotnet test Oikonomis.slnx --configuration Release
 
       - name: Set up Node.js 26.5.0
         uses: actions/setup-node@v4
@@ -104,7 +104,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/endeavoury/finance-inzicht-${{ matrix.component }}
+          images: ${{ env.REGISTRY }}/endeavoury/oikonomis-${{ matrix.component }}
           tags: |
             type=ref,event=branch
             type=ref,event=tag

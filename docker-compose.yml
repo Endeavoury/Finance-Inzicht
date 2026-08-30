@@ -1,4 +1,4 @@
-name: finance-inzicht
+name: oikonomis
 services:
   postgres:
     image: postgres:18-alpine
@@ -98,7 +98,7 @@ services:
     networks: [backend]
   design-system:
     build:
-      context: ${FINANCE_DESIGN_SYSTEM_CONTEXT:-../design}
+      context: ${KANOSIS_CONTEXT:-../design}
       dockerfile: Dockerfile
     ports:
       - "${DESIGN_SYSTEM_PORT:-6006}:8080"

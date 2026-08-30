@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using FinanceInzicht.Domain;
+using Oikonomis.Domain;
 using Microsoft.IdentityModel.Tokens;
 
 public static class AuthenticationSupport
@@ -27,7 +27,7 @@ public static class AuthenticationSupport
         if (key.Length < 32) throw new InvalidOperationException("Auth:JwtSigningKey must be at least 32 characters.");
         var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), SecurityAlgorithms.HmacSha256);
         var claims = new[] { new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), new Claim(ClaimTypes.Email, user.Email), new Claim(ClaimTypes.Name, user.DisplayName), new Claim(ClaimTypes.Role, user.Role.ToString()) };
-        return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(configuration["Auth:Issuer"] ?? "finance-inzicht", configuration["Auth:Audience"] ?? "finance-inzicht-web", claims, expires: DateTime.UtcNow.AddHours(12), signingCredentials: credentials));
+        return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(configuration["Auth:Issuer"] ?? "oikonomis", configuration["Auth:Audience"] ?? "oikonomis-web", claims, expires: DateTime.UtcNow.AddHours(12), signingCredentials: credentials));
     }
     public static object PublicUser(ApplicationUser user) => new { id = user.Id, email = user.Email, displayName = user.DisplayName, role = user.Role.ToString(), isActive = user.IsActive, createdAtUtc = user.CreatedAtUtc, lastLoginAtUtc = user.LastLoginAtUtc };
     public static string? Validate(string? email, string? displayName, string? password)

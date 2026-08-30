@@ -1,9 +1,9 @@
 FROM node:26.5.0-alpine AS build
-ARG FINANCE_DESIGN_SYSTEM_REF=8c5fac283447e59613eda5fc416ee77ead3af374
+ARG KANOSIS_REF=d49785536eb57735f1b7869631be6e51c051744f
 RUN apk add --no-cache git
 WORKDIR /workspace/design
 RUN git clone https://github.com/Endeavoury/Finance-DesignSystem.git . \
-  && git checkout --detach "$FINANCE_DESIGN_SYSTEM_REF"
+  && git checkout --detach "$KANOSIS_REF"
 RUN npm ci
 RUN npm run build:packages
 
