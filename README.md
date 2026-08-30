@@ -117,6 +117,21 @@ GitHub Actions validates the .NET solution and Angular application for pull requ
 
 Each published image has an immutable `sha-…` tag; `master` publishes `latest` too, and release tags add semantic version tags. The workflow uses the repository `GITHUB_TOKEN`, so no manually stored registry password is needed. In repository settings, ensure **Actions → General → Workflow permissions** permits read/write access, and configure package visibility/access in GitHub Packages as appropriate for the deployment environment.
 
+### Releases
+
+The semantic-release workflow uses `1.0.0` as its initial baseline. Every commit
+that reaches `master` receives the next patch tag and a generated GitHub Release
+(`v1.0.1`, `v1.0.2`, and so on). Multi-commit pushes create one release per
+commit. Release creation is serialized so concurrent pushes cannot claim the
+same version. Each release also starts the container pipeline for that exact
+tag, publishing full-version, major/minor, and major image tags.
+
+To begin a new release line, run **Create semantic releases** from the Actions
+tab and select `minor` or `major`. A minor run creates the next `vX.Y.0` release
+and a `release/X.Y` branch; a major run creates the next `vX.0.0` release and a
+`release/X.0` branch. Subsequent commits to `master` continue patching the latest
+semantic version.
+
 ## Security, privacy, limitations, roadmap
 
 Do not expose milestone one publicly: it intentionally lacks identity and authorization. Use TLS, a secrets manager, private networks, malware scanning, retention policies, backups, per-tenant authorization, and audit logging before production. Logs carry job/correlation identifiers but not transaction bodies or full IBANs. See `SECURITY.md`.

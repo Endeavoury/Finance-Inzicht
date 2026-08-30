@@ -6,18 +6,21 @@ on:
   push:
     branches: [master]
     tags: ['v*']
+  repository_dispatch:
+    types: [semantic-release]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: containers-${{ github.workflow }}-${{ github.ref }}
+  group: containers-${{ github.workflow }}-${{ github.event.client_payload.version || github.ref }}
   cancel-in-progress: true
 
 env:
   REGISTRY: ghcr.io
   FINANCE_DESIGN_SYSTEM_REF: 8f0394c5918e16acea82bcb0928b2ce7d10307c7
+  RELEASE_REF: ${{ github.event.client_payload.tag || github.ref }}
 
 jobs:
   verify:
@@ -26,6 +29,8 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_REF }}
 
       - name: Check out design system
         run: |
@@ -81,6 +86,8 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_REF }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -105,6 +112,9 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            type=raw,value=${{ github.event.client_payload.version }},enable=${{ github.event_name == 'repository_dispatch' }}
+            type=raw,value=${{ github.event.client_payload.major_minor }},enable=${{ github.event_name == 'repository_dispatch' }}
+            type=raw,value=${{ github.event.client_payload.major }},enable=${{ github.event_name == 'repository_dispatch' }}
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and publish image

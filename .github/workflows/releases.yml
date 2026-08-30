@@ -1,0 +1,156 @@
+name: Create semantic releases
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: Semantic version segment to increment
+        required: true
+        default: minor
+        type: choice
+        options:
+          - minor
+          - major
+
+permissions:
+  contents: write
+
+# Version calculation and tag creation must remain serialized, otherwise two
+# closely spaced pushes could select the same next version.
+concurrency:
+  group: semantic-release
+  cancel-in-progress: false
+
+jobs:
+  patch:
+    name: Release every new commit
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out complete history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create patch releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          latest_tag="$({
+            git tag --merged "$GITHUB_SHA" --list 'v*' |
+              grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' |
+              sort -V |
+              tail -n 1
+          } || true)"
+
+          if [[ -n "$latest_tag" ]]; then
+            version="${latest_tag#v}"
+            mapfile -t commits < <(
+              git rev-list --reverse --first-parent "$latest_tag..$GITHUB_SHA"
+            )
+          else
+            # 1.0.0 is the declared baseline. Do not release the repository's
+            # entire pre-release history when the workflow first runs.
+            version="1.0.0"
+            commits=("$GITHUB_SHA")
+          fi
+
+          IFS=. read -r major minor patch <<< "$version"
+          for commit in "${commits[@]}"; do
+            patch=$((patch + 1))
+            tag="v${major}.${minor}.${patch}"
+            gh release create "$tag" \
+              --target "$commit" \
+              --title "$tag" \
+              --generate-notes
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" \
+              -f event_type=semantic-release \
+              -f "client_payload[tag]=$tag" \
+              -f "client_payload[version]=${major}.${minor}.${patch}" \
+              -f "client_payload[major_minor]=${major}.${minor}" \
+              -f "client_payload[major]=$major"
+            echo "Created $tag for $commit" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+          if (( ${#commits[@]} == 0 )); then
+            echo "No unreleased commits found." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  release-line:
+    name: Start a ${{ inputs.release_type }} release line
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out complete history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create release branch and GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TYPE: ${{ inputs.release_type }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          latest_tag="$({
+            git tag --merged "$GITHUB_SHA" --list 'v*' |
+              grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' |
+              sort -V |
+              tail -n 1
+          } || true)"
+          version="${latest_tag#v}"
+          version="${version:-1.0.0}"
+          IFS=. read -r major minor patch <<< "$version"
+
+          case "$RELEASE_TYPE" in
+            minor)
+              minor=$((minor + 1))
+              patch=0
+              ;;
+            major)
+              major=$((major + 1))
+              minor=0
+              patch=0
+              ;;
+            *)
+              echo "Unsupported release type: $RELEASE_TYPE" >&2
+              exit 1
+              ;;
+          esac
+
+          version="${major}.${minor}.${patch}"
+          tag="v${version}"
+          branch="release/${major}.${minor}"
+
+          if git ls-remote --exit-code --heads origin "refs/heads/$branch" >/dev/null; then
+            echo "Branch $branch already exists." >&2
+            exit 1
+          fi
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists." >&2
+            exit 1
+          fi
+
+          git push origin "$GITHUB_SHA:refs/heads/$branch"
+          gh release create "$tag" \
+            --target "$GITHUB_SHA" \
+            --title "$tag" \
+            --generate-notes
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" \
+            -f event_type=semantic-release \
+            -f "client_payload[tag]=$tag" \
+            -f "client_payload[version]=$version" \
+            -f "client_payload[major_minor]=${major}.${minor}" \
+            -f "client_payload[major]=$major"
+
+          {
+            echo "Created branch \`$branch\`."
+            echo "Created release \`$tag\` for \`$GITHUB_SHA\`."
+          } >> "$GITHUB_STEP_SUMMARY"
