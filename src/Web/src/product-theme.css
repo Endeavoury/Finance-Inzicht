@@ -184,6 +184,54 @@ ds-button-group.period {
   border-radius: var(--ds-radius-lg);
 }
 
+/* Shared cards own every reusable surface. Product classes only define grid
+   placement and domain content; they no longer paint a competing card. */
+ds-card.panel,
+ds-card.period-panel,
+.budget-strip > ds-card,
+.account-settings > ds-card,
+.insight-ledger > ds-card {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+ds-card.panel::part(card),
+ds-card.period-panel::part(card) {
+  height: 100%;
+}
+
+ds-card.panel::part(body),
+ds-card.period-panel::part(body) {
+  height: 100%;
+  padding: var(--ds-space-5);
+}
+
+ds-card.data-surface::part(card) {
+  overflow: auto;
+}
+
+ds-card.data-surface::part(body) {
+  padding: 0;
+}
+
+ds-disclosure.period-details,
+ds-disclosure.balance-group,
+ds-disclosure.raw-detail {
+  border: 0;
+  background: transparent;
+}
+
+ds-disclosure.period-details [slot='summary'],
+ds-disclosure.balance-group [slot='summary'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--ds-space-3);
+  align-items: center;
+  width: 100%;
+}
+
 .page-card {
   padding: var(--ds-space-7);
   border-radius: var(--ds-radius-xl);
@@ -460,6 +508,49 @@ ds-kpi-grid.secondary ds-metric::part(metric) {
   transform: translateY(-1px);
 }
 
+/* Interactive dashboard surfaces used to inherit the original green-tinted
+   light-theme hover treatment from styles.css. Keep their feedback on the
+   semantic surface scale so dark mode never flashes a pale background. */
+.dashboard-list-link:hover,
+.dashboard-list-link:focus-visible,
+.bar-group.dashboard-link:hover,
+.bar-group.dashboard-link:focus-visible,
+.flow-month.dashboard-link:hover,
+.flow-month.dashboard-link:focus-visible,
+.account.dashboard-link:hover,
+.account.dashboard-link:focus-visible {
+  background: var(--ds-color-bg-hover);
+  color: var(--ds-color-text-primary);
+}
+
+ds-metric.dashboard-link:hover::part(metric),
+ds-metric.dashboard-link:focus-visible::part(metric) {
+  border-color: var(--ds-color-border-strong);
+  background: var(--ds-gradient-elevated);
+  box-shadow: var(--ds-shadow-md);
+}
+
+.dashboard-link::after,
+.dashboard-list-link::after {
+  color: var(--ds-color-accent-hover);
+}
+
+.bar-group:hover .income-bar,
+.bar-group:hover .expense-bar {
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 0 2px var(--ds-color-bg-hover),
+    0 0 0 4px
+      color-mix(in srgb, var(--ds-color-accent-primary) 24%, transparent);
+}
+
+.heat[role='button']:hover,
+.heat[role='button']:focus-visible {
+  outline-color: var(--ds-color-focus);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--ds-color-focus) 36%, transparent);
+}
+
 /* Monthly and annual planning surfaces */
 .period-page {
   gap: var(--ds-space-4);
@@ -678,11 +769,17 @@ ds-kpi-grid.secondary ds-metric::part(metric) {
 
 .calendar-day:hover,
 .calendar-day.selected,
+.daily-chart button:hover,
+.daily-chart button.selected,
+.year-chart button:hover,
+.year-chart button.selected,
 .month-card-rail button:hover,
 .month-card-rail button.selected,
 .category-bars > button:hover,
 .category-bars > button.selected,
+.category-chips button:hover,
 .category-chips button.active,
+.period-details > summary:hover,
 .balance-group summary:hover,
 .period-transactions button:hover {
   border-color: color-mix(
@@ -892,6 +989,12 @@ tbody tr:hover,
   color: var(--ds-color-text-muted);
 }
 
+.expand-btn:hover,
+.raw-detail summary:hover {
+  background: var(--ds-color-bg-hover);
+  color: var(--ds-color-text-primary) !important;
+}
+
 .detail-groups h4,
 .expand-btn,
 .category-pill,
@@ -945,6 +1048,11 @@ tbody tr:hover,
   align-content: start;
   gap: var(--ds-space-4);
   padding: var(--ds-space-5);
+}
+
+.account-settings article:hover {
+  border-color: var(--ds-color-border-strong);
+  background: var(--ds-gradient-elevated);
 }
 
 .settings-account-head {
@@ -1123,5 +1231,13 @@ ds-card.login-card h1 {
   .dashboard-link:hover,
   .dashboard-list-link:hover {
     transform: none;
+  }
+}
+
+/* Keep the login identity visible on narrow screens. The legacy mobile shell
+   rule intentionally collapses the sidebar brand, but must not affect login. */
+@media (max-width: 480px) {
+  .login-page .brand {
+    display: flex;
   }
 }
